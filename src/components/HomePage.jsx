@@ -7,11 +7,15 @@ import redfort from "../images/red-fort.jpg";
 import Navbar from './Navbar';
 import background from '../images/background1.jpg';
 
+
+
+
 const HomePage = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [username, setUsername] = useState(null);
 
+    
     useEffect(() => {
         const handleStorageChange = () => {
             const storedUsername = localStorage.getItem("username");
