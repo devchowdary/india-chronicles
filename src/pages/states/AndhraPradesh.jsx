@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Typography, Grid, Card, CardContent, CardMedia, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 import tirupathi from '../../images/andhraImages/tirupathi.jpg';
 import brahmam from '../../images/andhraImages/brahmamGariMatam2.jpg';
 import srisailam from '../../images/andhraImages/srisailam.jpg';
@@ -26,6 +27,19 @@ const images = [
 
 const AndhraPradesh = () => {
   const [searchInput, setSearchInput] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      navigate("/login"); 
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [navigate]);
 
   const handleSearchChange = (value) => {
     setSearchInput(value);
@@ -37,68 +51,63 @@ const AndhraPradesh = () => {
   );
 
   return (
-    <Container sx={{ marginTop: '40px', padding: 0 }}>
-      <Typography variant="h4" component="h1" gutterBottom marginTop='100px' marginLeft='500px' textTransform='uppercase' fontFamily='initial'>
-        Andhra Pradesh
-      </Typography>
-      
-      <Navbar onSearch={handleSearchChange} />
+    isLoggedIn ? (
+      <Container sx={{ marginTop: '40px', padding: 0 }}>
+        <Typography variant="h4" component="h1" gutterBottom marginTop='100px' marginLeft='400px' textTransform='uppercase' fontFamily='initial'>
+          Andhra Pradesh
+        </Typography>
 
-      <Grid container spacing={4} justifyContent="flex-start">
-        {filteredImages.map((image, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
-            <Card
-              onClick={() => { /* navigate to the specific page if needed */ }}
-              sx={{
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                '&:hover': {
-                  transform: 'scale(1.05)',
-                  boxShadow: '0 10px 30px rgba(0, 102, 255, 0.3), 0 6px 20px rgba(0, 102, 255, 0.15)',
-                  cursor: 'pointer',
-                },
-                width: '100%',
-                height: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start', 
-                marginLeft: '75px'
-              }}
-            >
-              <CardMedia
-                component="img"
-                alt={image.alt}
-                height="200"
-                image={image.src}
-                sx={{ objectFit: 'cover', width: '100%', height: '100%' }}
-              />
-              <CardContent>
-                <Typography variant="h6" component="h3" gutterBottom>
-                  {image.title.toUpperCase()}
-                </Typography>
-                <Typography variant="h6" component="h3" gutterBottom>
-                  {image.location.toUpperCase()}
-                </Typography>
-                <Typography variant="body2" color="textSecondary">
-                  {image.description}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-      
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          width: '100%',
-          marginTop: '40px',
-          marginLeft: '120px'
-        }}
-      >
-        <Footer />
-      </Box>
-    </Container>
+        <Navbar onSearch={handleSearchChange} />
+
+        <Grid container spacing={4} justifyContent="flex-start">
+          {filteredImages.map((image, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card
+                onClick={() => { /* navigate to the specific page if needed */ }}
+                sx={{
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                  '&:hover': {
+                    transform: 'scale(1.05)',
+                    boxShadow: '0 10px 30px rgba(0, 102, 255, 0.3), 0 6px 20px rgba(0, 102, 255, 0.15)',
+                    cursor: 'pointer',
+                  },
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-start',
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  alt={image.alt}
+                  height="200"
+                  image={image.src}
+                  sx={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                />
+                <CardContent>
+                  <Typography variant="h6" component="h3" gutterBottom>
+                    {image.title.toUpperCase()}
+                  </Typography>
+                  <Typography variant="h6" component="h3" gutterBottom>
+                    {image.location.toUpperCase()}
+                  </Typography>
+                  <Typography variant="body2" color="textSecondary">
+                    {image.description}
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+
+      </Container>
+    ) : (
+      // Show message if not logged in
+      <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
+        Please log in to access this page.
+      </Typography>
+    )
   );
 };
 

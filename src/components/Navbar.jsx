@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Button, Box, IconButton, InputBase } from '@mui/material';
+import { AppBar, Toolbar, Button, Box, IconButton, InputBase, Menu, MenuItem } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Search as SearchIcon } from '@mui/icons-material';
+import { Search as SearchIcon, AccountCircle } from '@mui/icons-material';
 import logo from '../images/logo.jpg';
 
 const Navbar = ({ onSearch }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false); // State to track if search is open
   const [searchInput, setSearchInput] = useState(''); // State for search input
+  const [anchorEl, setAnchorEl] = useState(null); // State for user menu anchor
 
   const handleSearchClick = () => {
     setIsSearchOpen(!isSearchOpen); // Toggle search field open/close
@@ -15,6 +16,14 @@ const Navbar = ({ onSearch }) => {
   const handleSearchChange = (event) => {
     setSearchInput(event.target.value); // Update search input state
     onSearch(event.target.value); // Pass search input to parent (HomePage)
+  };
+
+  const handleUserClick = (event) => {
+    setAnchorEl(event.currentTarget); // Set anchor for dropdown menu
+  };
+
+  const handleCloseMenu = () => {
+    setAnchorEl(null); // Close dropdown menu
   };
 
   return (
@@ -55,9 +64,9 @@ const Navbar = ({ onSearch }) => {
             Home
           </Button>
           <Button color="inherit" component={Link} to="/explore" sx={{ fontSize: '0.95rem', padding: '6px 12px' }}>
-            Explore 
+            Temples 
           </Button>
-          <Button color="inherit" component={Link} to="/tours" sx={{ fontSize: '0.95rem', padding: '6px 12px' }}>
+          <Button color="inherit" component={Link} to="/view-tours" sx={{ fontSize: '0.95rem', padding: '6px 12px' }}>
             Tours
           </Button>
           <Button color="inherit" component={Link} to="/traditions" sx={{ fontSize: '0.95rem', padding: '6px 12px' }}>
@@ -100,6 +109,25 @@ const Navbar = ({ onSearch }) => {
               }}
             />
           )}
+        </Box>
+
+        {/* User Icon - Dropdown Menu */}
+        <Box>
+          <IconButton 
+            onClick={handleUserClick} 
+            sx={{ color: '#000' }}
+          >
+            <AccountCircle />
+          </IconButton>
+          <Menu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleCloseMenu}
+          >
+            <MenuItem component={Link} to="/login" onClick={handleCloseMenu}>Login</MenuItem>
+            <MenuItem component={Link} to="/register" onClick={handleCloseMenu}>Registration</MenuItem>
+            <MenuItem component={Link} to="/profile" onClick={handleCloseMenu}>Profile</MenuItem>
+          </Menu>
         </Box>
       </Toolbar>
     </AppBar>

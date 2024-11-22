@@ -1,25 +1,39 @@
 import React from 'react';
 import { Card, CardContent, Typography, CardMedia, CardActions, IconButton } from '@mui/material';
-import { Instagram, Twitter, Email } from '@mui/icons-material'; // Import icons from Material UI
-import Footer from './Footer';
-import dev from '../images/teamImages/dev.jpg';
+import { Instagram, Twitter, Email } from '@mui/icons-material';
+import dev from '../images/teamImages/devendra.jpg';
 import mohith from '../images/teamImages/mohith.jpg'
 
 const teamMembers = [
   {
-    name: 'DEVENDRA CHOWDARY',
-    role: 'Project Developer',
-    image: dev, 
+    name: 'DEV CHOWDARY',
+    role: 'PROJECT DEVELOPER',
+    image: dev,
+    social: {
+      instagram: 'https://www.instagram.com/dev_chowdary._/',
+      twitter: 'https://x.com/dev_chowdary11',
+      email: '2200030138@kluniversity.in',
+    },
   },
   {
     name: 'CHARAN CHOWDARY',
     role: 'TEAM LEAD',
-    image: 'https://via.placeholder.com/200', 
+    image: '',
+    social: {
+      instagram: 'https://www.instagram.com/charan_chowdary',
+      twitter: 'https://twitter.com/charan_chowdary',
+      email: 'charan@example.com',
+    },
   },
   {
     name: 'MOHITH REDDY',
     role: 'Developer',
-    image: mohith, 
+    image: mohith,
+    social: {
+      instagram: 'https://www.instagram.com/mohith_reddy',
+      twitter: 'https://twitter.com/mohith_reddy',
+      email: 'mohith@example.com',
+    },
   },
 ];
 
@@ -40,7 +54,7 @@ export default function Team() {
           marginTop: '30px', 
         }}
       >
-        <Typography variant="h2" component="div" gutterBottom marginTop='50px' marginLeft='100px'>
+        <Typography variant="h2" component="div" gutterBottom marginTop='50px' marginLeft='50px'>
           TEAM
         </Typography>
       </div>
@@ -52,19 +66,19 @@ export default function Team() {
           justifyContent: 'center',
           alignItems: 'center',
           flexDirection: 'column',
-          flexGrow: 1, // Ensure this section grows to push the footer down
-          padding: '20px', // Reduced padding
-          marginLeft: '120px',
-          marginTop: '20px',
+          flexGrow: 1,
+          padding: '20px',
+          marginLeft: '10px',
+          marginTop: '0px',
         }}
       >
         <div 
           style={{
             display: 'flex',
             justifyContent: 'center',
-            gap: '30px', // Reduced gap between cards
+            gap: '30px',
             flexWrap: 'wrap',
-            cursor: 'pointer', // Set cursor to pointer for hover effect
+            cursor: 'pointer',
           }}
         >
           {teamMembers.map((member, index) => (
@@ -76,12 +90,11 @@ export default function Team() {
                 display: 'flex', 
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                transition: 'transform 0.3s ease, box-shadow 0.3s ease', // Add transition effects
+                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
               }}
-              // Hover effect: slightly zoom in and add blue shadow
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'scale(1.05)';
-                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 255, 0.5)'; // Blue shadow
+                e.currentTarget.style.boxShadow = '0 8px 16px rgba(0, 0, 255, 0.5)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'scale(1)';
@@ -106,23 +119,26 @@ export default function Team() {
 
               {/* Social Media Icons */}
               <CardActions style={{ justifyContent: 'center' }}>
-                <IconButton href="https://www.instagram.com" target="_blank" aria-label="Instagram">
-                  <Instagram />
-                </IconButton>
-                <IconButton href="https://twitter.com" target="_blank" aria-label="Twitter">
-                  <Twitter />
-                </IconButton>
-                <IconButton href="mailto:someone@example.com" aria-label="Gmail">
-                  <Email />
-                </IconButton>
+                {member.social.instagram && (
+                  <IconButton href={member.social.instagram} target="_blank" aria-label="Instagram">
+                    <Instagram />
+                  </IconButton>
+                )}
+                {member.social.twitter && (
+                  <IconButton href={member.social.twitter} target="_blank" aria-label="Twitter">
+                    <Twitter />
+                  </IconButton>
+                )}
+                {member.social.email && (
+                  <IconButton href={`mailto:${member.social.email}`} aria-label="Email">
+                    <Email />
+                  </IconButton>
+                )}
               </CardActions>
             </Card>
           ))}
         </div>
       </div>
-
-      {/* Footer Section */}
-      <Footer style={{ marginTop: 'auto' }} />
     </div>
   );
 }

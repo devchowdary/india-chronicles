@@ -1,5 +1,7 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Container, Typography, Grid, Card, CardContent, CardMedia, Box } from '@mui/material';
+
+import { useNavigate } from 'react-router-dom';
 
 import brahma from '../../images/rajasthanImages/godbrahma.jpg';
 import kamakshi from '../../images/rajasthanImages/godAmbika.jpg';
@@ -38,11 +40,23 @@ const Rajasthan = () => {
     image.location.toLowerCase().includes(searchInput.toLowerCase())
   );
   
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      navigate("/login");  // Redirect to login if not logged in
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [navigate]);
   
   
   return (
-
+    isLoggedIn ? (
   <Container sx={{ marginTop: '40px', padding: 0 }}> {/* Remove padding for the container */}
     <Typography variant="h4" component="h1" gutterBottom marginTop='100px' marginLeft='520px' textTransform='uppercase' fontFamily='initial' fontSize='40px'>
      rajasthan
@@ -69,7 +83,7 @@ const Rajasthan = () => {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-start', 
-              marginLeft:'75px'
+              // marginLeft:'75px'
             }}
           >
             <CardMedia
@@ -95,20 +109,14 @@ const Rajasthan = () => {
       ))}
     </Grid>
    
-    <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-            marginTop: '40px',
-            marginLeft: '120px'
-          }}
-        >
-            <Footer/>
-
-    </Box>
-
+  
   </Container>
+  ) : (
+    // Show message if not logged in
+    <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
+      Please log in to access this page.
+    </Typography>
+  )
 );
 };
 

@@ -1,5 +1,7 @@
-import React,{useState} from 'react';
+import React,{useState,useEffect} from 'react';
 import { Container, Typography, Grid, Card, CardContent, CardMedia, Box } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+
 
 import lordlakshmi from '../../images/jammuImages/lordlakshmi.jpg';
 import lordrama from '../../images/jammuImages/lordrama.jpg';
@@ -10,8 +12,9 @@ import saibaba from'../../images/jammuImages/saibaba.jpg';
 import sharadamataji from'../../images/jammuImages/sharadamataji.jpg';
 import sharikadevi from '../../images/jammuImages/sharikadevi.jpg';
 import vaishnavodevi from '../../images/jammuImages/vaishnavodevi.jpg';
-import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
+
+
 const images = [
   { src: lordlakshmi, alt: 'lord lakshmi', title: 'lord lakshmi', location: 'Ghaziabad', description: 'God Brahma is the Hindu creator deity, responsible for the creation of the universe and all living beings.As part of the Hindu trinity, Brahma is the deity who created the cosmos and established time.' },
   { src: lordrama, alt: 'lord rama', title: 'lord rama', location: 'varanasi', description: 'Meenakshi Matha, an incarnation of Goddess Parvati, is the presiding deity of the Meenakshi Amman Temple in Madurai and is revered for her beauty, strength, and compassion.' },
@@ -38,7 +41,21 @@ const Jammu = () => {
     image.location.toLowerCase().includes(searchInput.toLowerCase())
   );
   
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      navigate("/login");  // Redirect to login if not logged in
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [navigate]);
   return (
+    isLoggedIn ? (
 
   <Container sx={{ marginTop: '40px', padding: 0 }}> {/* Remove padding for the container */}
     <Typography variant="h4" component="h1" gutterBottom marginTop='100px' marginLeft='450px' textTransform='uppercase' fontFamily='initial' fontSize='50px'>
@@ -66,7 +83,7 @@ const Jammu = () => {
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'flex-start', 
-              marginLeft:'75px'
+              // marginLeft:'75px'
             }}
           >
             <CardMedia
@@ -91,21 +108,13 @@ const Jammu = () => {
         </Grid>
       ))}
     </Grid>
-   
-    <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            width: '100%',
-            marginTop: '40px',
-            marginLeft: '120px'
-          }}
-        >
-            <Footer/>
-
-    </Box>
-
   </Container>
+  ) : (
+    // Show message if not logged in
+    <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
+      Please log in to access this page.
+    </Typography>
+  )
 );
 };
 

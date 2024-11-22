@@ -1,130 +1,49 @@
-import React, { useState } from 'react';
-import { Container, TextField, Button, Typography, Box, Grid, Divider } from '@mui/material';
-import Footer from '../components/Footer';
-import { address } from 'framer-motion/client';
+// src/pages/ContactPage.js
+import React from 'react';
+import { Box, Typography, TextField, Button, Grid, IconButton } from '@mui/material';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
-    address:''
-  });
-
-  const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(formData);
-    // Handle form submission logic here
-  };
-
   return (
-    <>
-      <Box sx={{ backgroundColor: '#f4f4f4', minHeight: '100vh', paddingTop: '50px',marginLeft:'300px',marginTop:'100px' }}>
-        <Container maxWidth="md">
-          <Box textAlign="center" mb={6}>
-            <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-              Contact Us
-            </Typography>
-            <Divider variant="middle" sx={{ width: '60%', mx: 'auto', mb: 4, bgcolor: 'secondary.main', height: 2 }} />
-            <Typography variant="body1" color="textSecondary" sx={{ fontSize: '1.2rem', mb: 4 }}>
-              We'd love to hear from you! Please fill out the form below or reach out to us directly.
-            </Typography>
-          </Box>
+    <Box
+      sx={{
+        padding: '20px',
+        maxWidth: '600px', // Decreased the max width
+        margin: '0 auto',
+        textAlign: 'center',
+        border: '1px solid #ccc', // Added border
+        borderRadius: 2, // Added border radius
+        boxShadow: 3, // Optional: adds a shadow for better look
+        marginTop:'100px',
+        backgroundColor:'white'
+      }}
+    >
+      <Typography variant="h4" component="h1" gutterBottom color='black' fontStyle={'oblique'}>
+        Contact Us
+      </Typography>
+      <Typography variant="body1" color="textSecondary" sx={{ marginBottom: 4 }}>
+        Have any questions or want to get in touch? Fill out the form below, or reach out via email, phone, or our social media.
+      </Typography>
 
-          {/* Contact Form */}
-          <Grid container spacing={6}>
-            <Grid item xs={12} md={6}>
-              <form onSubmit={handleSubmit}>
-                <TextField
-                  fullWidth
-                  label="Name"
-                  name="name"
-                  variant="outlined"
-                  margin="normal"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-                <TextField
-                  fullWidth
-                  label="Email"
-                  name="email"
-                  variant="outlined"
-                  margin="normal"
-                  value={formData.email}
-                  onChange={handleChange}
-                  type="email"
-                  required
-                />
-                 <TextField
-                  fullWidth
-                  label="Address"
-                  name="address"
-                  variant="outlined"
-                  margin="normal"
-                  value={formData.email}
-                  onChange={handleChange}
-                  type="email"
-                  required
-                />
-                <TextField
-                  fullWidth
-                  label="Queries"
-                  name="message"
-                  variant="outlined"
-                  margin="normal"
-                  multiline
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
-                  required
-                />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  sx={{ mt: 2, fontWeight: 'bold',marginLeft:'120px' }}
-                >
-                  Send Message
-                </Button>
-              </form>
-            </Grid>
+      {/* Form Section */}
+      <Box
+        component="form"
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3,
+        }}
+        noValidate
+        autoComplete="off"
+      >
+        <TextField label="Name" variant="outlined" fullWidth required />
+        <TextField label="Email" variant="outlined" type="email" fullWidth required />
+        <TextField label="Message" variant="outlined" multiline rows={4} fullWidth required />
+        <Button variant="contained" color="primary" size="large" sx={{ marginTop: 2 }}>
+          Send Message
+        </Button>
+      </Box>
 
-            {/* Contact Details */}
-            <Grid item xs={12} md={6}>
-              <Box>
-                <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.dark' }}>
-                  Get In Touch
-                </Typography>
-                <Typography variant="body1" color="textSecondary" sx={{ fontSize: '1.1rem', mb: 1 }}>
-                  Email: contact@cultureheritage.in
-                </Typography>
-                <Typography variant="body1" color="textSecondary" sx={{ fontSize: '1.1rem', mb: 1 }}>
-                  Phone: +91 9701772245
-                </Typography>
-                <Typography variant="body1" color="textSecondary" sx={{ fontSize: '1.1rem', mb: 1 }}>
-                  Address: 123,Vaddeswaram,Vijayawada, India
-                </Typography>
-                <Typography variant="body1" color="textSecondary" sx={{ fontSize: '1.1rem' }}>
-                  Feel free to reach out via email, phone, or drop by our office.
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
-        </Container>
-      </Box>
-      <Box marginTop='50px' marginLeft='270px'>
-      <Footer />
-      </Box>
-      
-    </>
+    </Box>
   );
 };
 

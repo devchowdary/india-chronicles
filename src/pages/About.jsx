@@ -1,103 +1,68 @@
+// src/pages/AboutPage.js
 import React from 'react';
-import { Typography, Box, Container, Grid, Divider } from '@mui/material';
-import Footer from '../components/Footer';
+import { Typography, Container, Box, Card, Grid, Avatar } from '@mui/material';
+
+// Replace with actual logo URLs
+const logos = [
+  { name: 'Incredible India', src: 'https://ih1.redbubble.net/image.3626599082.0979/flat,750x,075,f-pad,750x1000,f8f8f8.jpg' },
+  { name: 'Archaeological Survey of India', src: 'https://upload.wikimedia.org/wikipedia/en/f/f3/Archaeological_Survey_of_India.jpg' },
+  { name: 'Ministry of Culture, India', src: 'https://himachaltonite.com/wp-content/uploads/2020/10/Ministery-of-culture.png' },
+  { name: 'Sahapedia', src: 'https://cdn.razorpay.com/logos/GUiH77AZJJN04f_large.png' },
+  { name: 'Indian Heritage Society', src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQUaDLPH0gOL7_zdkywoX92nMhlRGGHnaG8KbrVUwj_SEGMH80xGP5kcdk0sNEQMUwZLv4&usqp=CAU' },
+  { name: 'INTACH (Indian National Trust for Art and Cultural Heritage)', src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQmHzLj5kNlUm1bV5uY9oZXATaZ_FsPk_eWlYYRSmXzzCd_2jUyXDQZ0rmQiaS7dzVl5zo&usqp=CAU' },
+  { name: 'National Museum, New Delhi', src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFrUzrqAeV3bIL5JiN87GsREbvI8JcHm2Geg&s' },
+  { name: 'Sangeet Natak Akademi', src: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTwGxXQ4Gip5rTqfqkezAGZA-rGJ-0U8KXFkg&s' },
+];
 
 const About = () => {
   return (
-    <>
-      <Box sx={{ backgroundColor: '#1a1a1a', color: '#f5f5f5', minHeight: '100vh',marginLeft:'220px',marginTop:'50px' }}> {/* Dark background with light text */}
-        <Container maxWidth="md" sx={{ mt: 8, mb: 8,  }}>
-          {/* Header Section */}
-          <Box textAlign="center" mb={6}>
-            <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-              About Us
-            </Typography>
-            <Divider variant="middle" sx={{ width: '60%', mx: 'auto', mb: 4, bgcolor: 'secondary.main', height: 2 }} />
-            <Typography variant="body1" color="#f5f5f5" sx={{ fontSize: '1.2rem', mb: 4 }}>
-              Welcome to <strong>India: Culture, Heritage, and Monuments</strong> – a platform dedicated to celebrating
-              India's rich cultural tapestry, timeless heritage, and awe-inspiring monuments. Our goal is to inspire
-              awareness and appreciation for the incredible landmarks, historical sites, and traditions that make
-              India a diverse and unique nation.
-            </Typography>
-          </Box>
+    <Box sx={{ backgroundColor: 'white', width: '100%', py: 5, mt: '90px' }}>
+      <Container maxWidth="md">
+        <Box textAlign="center">
+          <Typography variant="h3" gutterBottom color="black">About Us</Typography>
+          <Typography variant="subtitle1" color="text.secondary">
+            Discover our mission to celebrate and share the vibrant tapestry of Indian culture.
+          </Typography>
+        </Box>
 
-          {/* Grid Content */}
-          <Grid container spacing={6}>
-            {/* Vision Section */}
-            <Grid item xs={12} md={6}>
-              <Box>
-                <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.light' }}>
-                  Our Vision
-                </Typography>
-                <Typography variant="body1" color="#f5f5f5" sx={{ fontSize: '1.1rem' }}>
-                  We aim to inspire both Indians and global citizens to discover and appreciate India’s{' '}
-                  <strong>ancient heritage</strong> and <strong>modern culture</strong>. By highlighting{' '}
-                  <strong>monuments</strong>, <strong>heritage sites</strong>, and <strong>cultural landmarks</strong>, we
-                  hope to foster a deeper connection with India’s millennia-old stories.
-                </Typography>
-              </Box>
-            </Grid>
+        <Box mt={4}>
+          <Typography variant="h5" gutterBottom color='black' fontStyle={'oblique'}>Our Vision</Typography>
+          <Typography variant="body1" color="text.secondary">
+            We aim to create an immersive platform that showcases the beauty, diversity, and heritage of India through interactive virtual experiences, detailed insights into historical monuments, and explorations of traditional arts, crafts, music, and dance.
+          </Typography>
+        </Box>
 
-            {/* What We Offer Section */}
-            <Grid item xs={12} md={6}>
-              <Box>
-                <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.light' }}>
-                  What We Offer
-                </Typography>
-                <Typography variant="body1" color="#f5f5f5" sx={{ fontSize: '1.1rem', mb: 1 }}>
-                  - <strong>State-wise Exploration</strong>: Explore heritage from the serene landscapes of Kerala to the
-                  forts of Rajasthan.
-                </Typography>
-                <Typography variant="body1" color="#f5f5f5" sx={{ fontSize: '1.1rem', mb: 1 }}>
-                  - <strong>Cultural Exchange</strong>: Engage in discussions about Indian festivals, art forms, and
-                  traditions.
-                </Typography>
-                <Typography variant="body1" color="#f5f5f5" sx={{ fontSize: '1.1rem', mb: 1 }}>
-                  - <strong>Monument Highlights</strong>: Learn about India's iconic monuments and their historical
-                  significance.
-                </Typography>
-                <Typography variant="body1" color="#f5f5f5" sx={{ fontSize: '1.1rem' }}>
-                  - <strong>Heritage Awareness</strong>: Understand why preserving India’s historical structures is vital for
-                  future generations.
-                </Typography>
-              </Box>
-            </Grid>
+        <Box mt={4}>
+          <Typography variant="h5" gutterBottom color='black' fontStyle={'oblique'}>Our Mission</Typography>
+          <Typography variant="body1" color="text.secondary">
+            Our mission is to bridge cultural gaps, bringing the world closer to Indian traditions. We want to provide an accessible resource for learning, appreciation, and engagement with India’s rich cultural legacy. Through interactive tours and curated content, we strive to inspire a global audience to connect with India’s historical and cultural wonders.
+          </Typography>
+        </Box>
 
-            {/* Mission Section */}
-            <Grid item xs={12}>
-              <Box>
-                <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.light' }}>
-                  Our Mission
+        <Box mt={4}>
+          <Typography variant="h5" gutterBottom color='black' fontStyle={'oblique'}>Our Partners</Typography>
+          <Grid container spacing={3} justifyContent="center">
+            {logos.map((logo, index) => (
+              <Grid item xs={6} sm={3} key={index}>
+                <Card variant="outlined" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: 120 }}>
+                  <Avatar src={logo.src} alt={logo.name} sx={{ width: 80, height: 80 }} />
+                </Card>
+                <Typography variant="body2" align="center" color="text.secondary">
+                  {logo.name}
                 </Typography>
-                <Typography variant="body1" color="#f5f5f5" sx={{ fontSize: '1.1rem' }}>
-                  Our mission is to promote awareness and understanding of India’s diverse culture, rich history, and
-                  architectural marvels. We aim to be a resource for students, historians, travelers, and anyone curious about
-                  India’s unparalleled heritage.
-                </Typography>
-              </Box>
-            </Grid>
-
-            {/* Join Us Section */}
-            <Grid item xs={12}>
-              <Box>
-                <Typography variant="h4" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.light' }}>
-                  Join Us on the Journey
-                </Typography>
-                <Typography variant="body1" color="#f5f5f5" sx={{ fontSize: '1.1rem' }}>
-                  India’s story is a journey of evolution and transformation. We invite you to explore with us, engage with our
-                  content, and contribute to preserving and celebrating India’s cultural and monumental legacy for generations
-                  to come.
-                </Typography>
-              </Box>
-            </Grid>
+              </Grid>
+            ))}
           </Grid>
-        </Container>
-      </Box>
-      <Box marginLeft='220px'>
-      <Footer />
+        </Box>
 
-      </Box>
-    </>
+        <Box mt={5} mb={4} textAlign="center">
+          <Typography variant="h5" gutterBottom color='black' fontStyle={'oblique'}>Our Journey</Typography>
+          <Typography variant="body1" color="text.secondary">
+            This platform began as a dream to preserve and share India’s unique heritage. With passion and dedication, our team researched, documented, and curated each detail to bring you an authentic experience of India’s cultural richness. We believe that learning about the past and appreciating the present connects us to a shared future.
+          </Typography>
+        </Box>
+      </Container>
+    </Box>
   );
 };
 

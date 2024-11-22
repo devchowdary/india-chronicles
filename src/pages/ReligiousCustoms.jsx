@@ -1,6 +1,6 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Card, CardContent, CardMedia, Typography, Grid, Container, Box } from '@mui/material';
-import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const customsData = [
     {
@@ -95,12 +95,25 @@ const customsData = [
 ];
 
 const ReligiousCustoms = () => {
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      navigate("/login");  // Redirect to login if not logged in
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [navigate]);
     return (
+        isLoggedIn ? (
         <Container>
-            <Typography variant="h2" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='120px'>
+            <Typography variant="h2" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='20px'>
                 Religious Customs in India
             </Typography>
-            <Grid container spacing={4} marginTop='20px' marginLeft='60px'> 
+            <Grid container spacing={4} marginTop='20px' marginLeft='-50px'> 
                 {customsData.map((religion, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
                         <Card sx={{ width: 350, height: 450, margin: 'auto', boxShadow: 3 }}>
@@ -126,11 +139,14 @@ const ReligiousCustoms = () => {
                     </Grid>
                 ))}
             </Grid>
-            <Box marginLeft='200px' marginTop='50px'>
-            <Footer/>
-            </Box>
            
         </Container>
+        ) : (
+            // Show message if not logged in
+            <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
+              Please log in to access this page.
+            </Typography>
+          )
     );
 };
 

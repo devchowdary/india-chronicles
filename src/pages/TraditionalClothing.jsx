@@ -69,10 +69,10 @@ const clothingData = [
 const TraditionalClothing = () => {
     return (
         <Container>
-            <Typography variant="h3" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='150px'>
+            <Typography variant="h3" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='10px'>
                 INDIAN TRADITIONAL WEAR
             </Typography>
-            <Grid container spacing={4} marginLeft='60px'>
+            <Grid container spacing={4} marginLeft='-50px'>
                 {clothingData.map((clothes, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
                         <Card sx={{ maxWidth: '350px',height:'500px', margin: 'auto', boxShadow: 3 }}>
@@ -97,7 +97,7 @@ const TraditionalClothing = () => {
                     </Grid>
                 ))}
             </Grid>
-            <Footer/>
+           
         </Container>
         
     );

@@ -1,7 +1,7 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Card, CardContent, Typography, Box, Button, CardMedia } from '@mui/material';
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import Footer from '../components/Footer';
+
 
 const traditions = [
  
@@ -57,8 +57,19 @@ const traditions = [
 
 const Traditions = () => {
   const navigate = useNavigate(); // Hook for navigation
-
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      navigate("/login");  // Redirect to login if not logged in
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [navigate]);
   return (
+    isLoggedIn ? (
     <div style={{ marginTop: '80px' }}>
       <h1 style={{ marginLeft: '450px' }}>INDIAN TRADITIONS</h1>
       <Box
@@ -99,8 +110,14 @@ const Traditions = () => {
           </Card>
         ))}
       </Box>
-      <Footer />
+      
     </div>
+    ) : (
+      // Show message if not logged in
+      <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
+        Please log in to access this page.
+      </Typography>
+    )
   );
 };
 

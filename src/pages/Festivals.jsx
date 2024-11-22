@@ -1,7 +1,7 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Card, CardContent, Typography, Box, CardMedia, Grid } from '@mui/material';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+import { useNavigate } from 'react-router-dom';
+
 
 const festivals = [
   {
@@ -147,9 +147,22 @@ const festivals = [
 ];
 
 const Festivals = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      navigate("/login");  // Redirect to login if not logged in
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [navigate]);
   return (
-    <Box sx={{ flexGrow: 1, padding: 4,marginTop:'100px',marginLeft:'30px'}} >
-      <Grid container spacing={4}>
+    isLoggedIn ? (
+    <Box sx={{ flexGrow: 1, padding: 10,marginTop:'100px',marginLeft:'30px'}} >
+      <Grid container spacing={5}>
         {festivals.map((festival, index) => (
           <Grid item xs={12} sm={6} md={4} key={index}>
             <Card sx={{ maxWidth: 345, height: '100%' }}>
@@ -175,10 +188,14 @@ const Festivals = () => {
         ))}
       </Grid>
 
-      <Footer/>
-
-    </Box>
     
+    </Box>
+    ) : (
+      // Show message if not logged in
+      <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
+        Please log in to access this page.
+      </Typography>
+    )    
   );
   
 };

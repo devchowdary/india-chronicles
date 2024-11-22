@@ -1,7 +1,6 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import { Card, CardContent, CardMedia, Typography, Grid, Container } from '@mui/material';
-import Footer from '../components/Footer';
-
+import { useNavigate } from 'react-router-dom';
 const languagesInIndia = [
   {
     "name": "Telugu",
@@ -65,12 +64,28 @@ const languagesInIndia = [
   }
 ];
 const Languages = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      navigate("/login");  // Redirect to login if not logged in
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [navigate]);
     return (
+
+      
+      isLoggedIn ? (
+        <>
         <Container>
-            <Typography variant="h3" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='140px'>
+            <Typography variant="h3" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='10px'>
                    LANGUAGES IN INDIA
             </Typography>
-            <Grid container spacing={4} marginLeft='60px'>
+            <Grid container spacing={4} marginLeft='-60px'>
                 {languagesInIndia.map((lang, index) => (
                     <Grid item xs={12} sm={6} md={4} key={index}>
                         <Card sx={{ maxWidth: '350px',height:'400px', margin: 'auto', boxShadow: 3 }}>
@@ -95,8 +110,17 @@ const Languages = () => {
                     </Grid>
                 ))}
             </Grid>
-            <Footer/>
+            
         </Container>
+
+               </> 
+      ) : (
+    // Show message if not logged in
+    <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
+      Please log in to access this page.
+    </Typography>
+  )
+        
         
     );
 };

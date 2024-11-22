@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Container, Typography, Grid, Card, CardContent, CardMedia, Box } from '@mui/material';
 
 import ayyappa from '../../images/keralaImages/godAyyappa.jpg';
@@ -10,8 +10,8 @@ import padmanabaswamy from '../../images/keralaImages/godpadmanabaswamy.jpg';
 import malayala from '../../images/keralaImages/godmalayalappuzha.jpg';
 import srikrishna from '../../images/keralaImages/godsrikrishna.jpg';
 import nagaraja from '../../images/keralaImages/godnagaraja.jpeg';
-import Footer from '../../components/Footer';
 import Navbar from '../../components/Navbar';
+import { useNavigate } from 'react-router-dom';
 
 const images = [
   { src: ayyappa, alt: 'Ayyappa Swamy', title: 'Ayyappa Swamy', location: 'Pathanamthitta', description: 'God Brahma is the Hindu creator deity, responsible for the creation of the universe and all living beings.' },
@@ -37,9 +37,25 @@ const Kerala = () => {
     image.location.toLowerCase().includes(searchInput.toLowerCase())
   );
 
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    // Check if the user is logged in
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setIsLoggedIn(false);
+      navigate("/login");  // Redirect to login if not logged in
+    } else {
+      setIsLoggedIn(true);
+    }
+  }, [navigate]);
+
   return (
+    isLoggedIn ? (
+
     <Container sx={{ marginTop: '40px', padding: 0 }}>
-      <Typography variant="h4" component="h1" gutterBottom marginTop='100px' marginLeft='585px' textTransform='uppercase' fontFamily='initial'>
+      <Typography variant="h4" component="h1" gutterBottom marginTop='100px' marginLeft='485px' textTransform='uppercase' fontFamily='initial'>
         Kerala
       </Typography>
 
@@ -62,7 +78,7 @@ const Kerala = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'flex-start',
-                marginLeft: '75px'
+                marginLeft: '5px'
               }}
             >
               <CardMedia
@@ -87,19 +103,13 @@ const Kerala = () => {
           </Grid>
         ))}
       </Grid>
-
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          width: '100%',
-          marginTop: '40px',
-          marginLeft: '120px'
-        }}
-      >
-        <Footer />
-      </Box>
     </Container>
+     ) : (
+      // Show message if not logged in
+      <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
+        Please log in to access this page.
+      </Typography>
+    )
   );
 };
 

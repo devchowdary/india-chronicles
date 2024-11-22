@@ -233,7 +233,7 @@ const VirtualTours = () => {
         </Card>
         
       ))}
-      <Footer/>
+   
     </Box>
     
   );
