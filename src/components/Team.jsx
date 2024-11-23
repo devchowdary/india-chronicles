@@ -1,8 +1,9 @@
 import React from 'react';
 import { Card, CardContent, Typography, CardMedia, CardActions, IconButton } from '@mui/material';
 import { Instagram, Twitter, Email } from '@mui/icons-material';
+import { Helmet } from 'react-helmet';
 import dev from '../images/teamImages/devendra.jpg';
-import mohith from '../images/teamImages/mohith.jpg'
+import mohith from '../images/teamImages/mohith.jpg';
 
 const teamMembers = [
   {
@@ -46,6 +47,15 @@ export default function Team() {
         minHeight: '100vh',
       }}
     >
+      {/* React Helmet for Dynamic Metadata */}
+      <Helmet>
+        <title>Project Developers</title>
+        <meta
+          name="description"
+          content="Get to know the talented minds behind our project. Meet our developers and team lead who bring ideas to life."
+        />
+      </Helmet>
+
       {/* Header Section */}
       <div 
         style={{
@@ -105,7 +115,7 @@ export default function Team() {
                 component="img"
                 alt={member.name}
                 height="300"
-                image={member.image}
+                image={member.image || 'https://via.placeholder.com/350x300?text=No+Image'}
                 style={{ objectFit: 'cover' }}
               />
               <CardContent style={{ textAlign: 'center' }}>

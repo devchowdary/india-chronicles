@@ -101,7 +101,7 @@ const TourDetailPage = () => {
   };
 
   const handleBooking = () => {
-    axios.post(`http://localhost:8080/tours/book-tour`, { packageType: selectedPackage.label, members, totalBill })
+    axios.post(`http://localhost:8080/tour-details/book-tour`, { packageType: selectedPackage.label, members, totalBill })
       .then(response => {
         toast.success("Booking Successful", { position: "top-right", autoClose: 3000 });
       })

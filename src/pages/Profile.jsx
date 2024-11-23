@@ -63,35 +63,36 @@ const Profile = () => {
             return;
         }
 
-        fetchProfile(token); // Fetch profile with the current token
+        fetchProfile(token); 
 
-        // Simulate a loading time of 3 seconds
+       
         const timeout = setTimeout(() => {
             setLoading(false);
-        }, 3000); // Stop loading after 3 seconds
+        }, 3000); 
 
-        return () => clearTimeout(timeout); // Clean up timeout on unmount
+        return () => clearTimeout(timeout);
     }, [navigate]);
 
     const handleLogout = () => {
-        // Clear user data from localStorage
+        
         localStorage.removeItem("token");
         localStorage.removeItem("username");
-        navigate("/"); // Redirect to login page
+        localStorage.removeItem("role");
+        navigate("/"); 
     };
 
-    // Handlers for the Settings dropdown menu
+    
     const handleSettingsClick = (event) => {
-        setMenuAnchor(event.currentTarget); // Open menu
+        setMenuAnchor(event.currentTarget); 
     };
 
     const handleCloseMenu = () => {
-        setMenuAnchor(null); // Close menu
+        setMenuAnchor(null);
     };
 
     const handleUpdateProfile = () => {
         handleCloseMenu();
-        navigate("/update-profile"); // Navigate to Update Profile page
+        navigate("/update-profile"); 
     };
 
     const handleDeleteAccount = async () => {
@@ -103,27 +104,26 @@ const Profile = () => {
                     Authorization: `Bearer ${token}`,
                 },
             });
-            setOpenSuccessDialog(true); // Show success dialog
-            setTimeout(handleLogout, 2000); // Log out after a short delay
+            setOpenSuccessDialog(true); 
+            setTimeout(handleLogout, 2000); 
         } catch (err) {
             console.error("Error deleting account:", err);
             setError("Failed to delete account. Please try again.");
         }
     };
 
-    // Handlers for dialog
+   
     const openDeleteDialog = () => setOpenDialog(true);
     const closeDeleteDialog = () => setOpenDialog(false);
 
     const confirmDeleteAccount = () => {
         closeDeleteDialog();
-        handleDeleteAccount(); // Proceed with deletion
+        handleDeleteAccount();
     };
 
-    // Handlers for success dialog
     const closeSuccessDialog = () => {
-        setOpenSuccessDialog(false); // Close success dialog
-        navigate("/"); // Redirect to login page
+        setOpenSuccessDialog(false);
+        navigate("/"); 
     };
 
     return (
@@ -142,9 +142,9 @@ const Profile = () => {
             {error ? (
                 <Typography color="error">{error}</Typography>
             ) : loading ? (
-                // Skeleton loader displayed for 3 seconds
+                
                 <Box>
-                    {/* Skeleton Loader */}
+                    
                     <Skeleton variant="circle" width={56} height={56} sx={{ margin: "auto", marginBottom: 2 }} />
                     <Skeleton variant="text" width="80%" sx={{ margin: "auto", marginBottom: 1 }} />
                     <Skeleton variant="text" width="60%" sx={{ margin: "auto", marginBottom: 1 }} />
@@ -160,7 +160,7 @@ const Profile = () => {
                         marginBottom={2}
                         sx={{ position: "relative" }}
                     >
-                        {/* Profile Icon Centered */}
+                       
                         <Avatar
                             sx={{
                                 bgcolor: "primary.main",
@@ -171,7 +171,7 @@ const Profile = () => {
                         >
                             <AccountCircleIcon fontSize="large" />
                         </Avatar>
-                        {/* Settings Icon on the Right */}
+                     
                         <IconButton
                             color="primary"
                             aria-label="settings"
@@ -222,7 +222,7 @@ const Profile = () => {
                 <Typography>Loading profile...</Typography>
             )}
 
-            {/* Delete Confirmation Dialog */}
+            
             <Dialog
                 open={openDialog}
                 onClose={closeDeleteDialog}
@@ -245,7 +245,7 @@ const Profile = () => {
                 </DialogActions>
             </Dialog>
 
-            {/* Success Confirmation Dialog */}
+            
             <Dialog
                 open={openSuccessDialog}
                 onClose={closeSuccessDialog}

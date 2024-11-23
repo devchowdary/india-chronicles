@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { Card, CardContent, Typography, Box, CardMedia, Grid } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 
 const festivals = [
@@ -160,6 +161,14 @@ const Festivals = () => {
     }
   }, [navigate]);
   return (
+    <>
+     <Helmet>
+        <title>India Festivals</title>
+        <meta
+          name="description"
+          content="Learn about our vision and mission to bridge cultural gaps and showcase the vibrant heritage of India. Meet our partners and discover our journey."
+        />
+      </Helmet>
     isLoggedIn ? (
     <Box sx={{ flexGrow: 1, padding: 10,marginTop:'100px',marginLeft:'30px'}} >
       <Grid container spacing={5}>
@@ -196,6 +205,7 @@ const Festivals = () => {
         Please log in to access this page.
       </Typography>
     )    
+    </>
   );
   
 };

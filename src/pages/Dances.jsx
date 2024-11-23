@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { Card, CardContent, CardMedia, Typography, Grid, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 const dances = [
     
@@ -131,6 +132,14 @@ const Dances = () => {
     }
   }, [navigate]);
     return (
+      <>
+     <Helmet>
+        <title>Classical Dances of India</title>
+        <meta
+          name="description"
+          content="Explore the rich cultural heritage of India through its classical and folk dances. Learn about Bharatanatyam, Kathak, Odissi, Bihu, and many more."
+        />
+      </Helmet>
       isLoggedIn ? (
         <Container>
             <Typography variant="h3" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='50px'>
@@ -169,7 +178,7 @@ const Dances = () => {
             Please log in to access this page.
           </Typography>
         )
-        
+        </>
     );
 };
 

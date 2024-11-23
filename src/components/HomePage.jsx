@@ -6,29 +6,22 @@ import qutabminar from "../images/qutab-minar.jpg";
 import redfort from "../images/red-fort.jpg";
 import Navbar from './Navbar';
 import background from '../images/background1.jpg';
-
-
-
+import { Helmet } from 'react-helmet';
 
 const HomePage = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [username, setUsername] = useState(null);
 
-    
     useEffect(() => {
         const handleStorageChange = () => {
             const storedUsername = localStorage.getItem("username");
             setUsername(storedUsername);
         };
 
-        // Listen for changes to localStorage
         window.addEventListener("storage", handleStorageChange);
-
-        // Set initial username
         handleStorageChange();
 
-        // Cleanup event listener on component unmount
         return () => {
             window.removeEventListener("storage", handleStorageChange);
         };
@@ -59,11 +52,20 @@ const HomePage = () => {
     ];
 
     const filteredContent = featuredContent.filter(item =>
-        item.title.toLowerCase().includes(searchQuery.toLowerCase()) || item.location.toLowerCase().includes(searchQuery.toLowerCase())
+        item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        item.location.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     return (
         <div>
+            <Helmet>
+                <title>Home </title>
+                <meta
+                    name="description"
+                    content="Discover the timeless treasures and iconic landmarks of India. Explore destinations like the Taj Mahal, Qutub Minar, and Red Fort."
+                />
+            </Helmet>
+
             <Navbar onSearch={(query) => setSearchQuery(query)} />
 
             <header style={{
@@ -83,7 +85,7 @@ const HomePage = () => {
                 backgroundAttachment: 'fixed'
             }}>
                 <Container maxWidth="md" style={{ position: 'relative', zIndex: 1 }}>
-                    {username ? (
+                    {username && (
                         <Typography variant="h5" component="p" gutterBottom style={{
                             textShadow: '1px 1px 2px rgba(0, 0, 0, 0.4)',
                             fontSize: '2.3rem',
@@ -93,7 +95,7 @@ const HomePage = () => {
                         }}>
                             WELCOME, {username.toUpperCase()}!
                         </Typography>
-                    ) : null}
+                    )}
                     <Typography variant="h2" component="h1" gutterBottom style={{
                         textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)',
                         fontWeight: 700,

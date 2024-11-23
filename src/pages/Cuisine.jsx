@@ -1,6 +1,7 @@
 import React,{useState,useEffect} from 'react';
 import { Card, CardContent, CardMedia, Typography, Grid, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 
 const foodData = [
@@ -148,6 +149,15 @@ const Cuisine = () =>
     }
   }, [navigate]);
     return (
+        <>
+        <Helmet>
+        <title>India Cuisine</title>
+        <meta
+          name="description"
+          content="Learn about our vision and mission to bridge cultural gaps and showcase the vibrant heritage of India. Meet our partners and discover our journey."
+        />
+      </Helmet>
+
         isLoggedIn ? (
         <Container>
             <Typography variant="h3" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='0px'>
@@ -187,6 +197,7 @@ const Cuisine = () =>
             </Typography>
           )
         
+          </>
     );
 };
 

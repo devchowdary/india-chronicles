@@ -1,6 +1,9 @@
-import React,{useState,useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardMedia, Typography, Grid, Container } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
+
+// Language data
 const languagesInIndia = [
   {
     "name": "Telugu",
@@ -63,66 +66,90 @@ const languagesInIndia = [
     "image": "https://www.filose.com/wp-content/uploads/2023/09/odia-calligraphy-2.png"
   }
 ];
+
 const Languages = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
+
   useEffect(() => {
     // Check if the user is logged in
     const token = localStorage.getItem("token");
     if (!token) {
       setIsLoggedIn(false);
-      navigate("/login");  // Redirect to login if not logged in
+      navigate("/login"); // Redirect to login if not logged in
     } else {
       setIsLoggedIn(true);
     }
   }, [navigate]);
-    return (
 
-      
-      isLoggedIn ? (
-        <>
+  return (
+    <>
+      {/* React Helmet for dynamic metadata */}
+      <Helmet>
+        <title>Languages in India </title>
+        <meta
+          name="description"
+          content="Explore the diverse languages of India, their regions, and cultural significance. Learn about Telugu, Hindi, Bengali, Tamil, and more."
+        />
+      </Helmet>
+
+      {isLoggedIn ? (
         <Container>
-            <Typography variant="h3" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='10px'>
-                   LANGUAGES IN INDIA
-            </Typography>
-            <Grid container spacing={4} marginLeft='-60px'>
-                {languagesInIndia.map((lang, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
-                        <Card sx={{ maxWidth: '350px',height:'400px', margin: 'auto', boxShadow: 3 }}>
-                            <CardMedia
-                                component="img"
-                                height="250"
-                                image={lang.image}
-                                alt={lang.name}
-                            />
-                            <CardContent>
-                                <Typography variant="h5" component="div" gutterBottom>
-                                    {lang.name}
-                                </Typography>
-                                <Typography variant="subtitle1" color="text.primary">
-                                    {lang.location}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    {lang.description}
-                                </Typography>
-                            </CardContent>
-                        </Card>
-                    </Grid>
-                ))}
-            </Grid>
-            
+          <Typography
+            variant="h3"
+            component="h1"
+            gutterBottom
+            align="center"
+            marginTop="80px"
+          >
+            LANGUAGES IN INDIA
+          </Typography>
+          <Grid container spacing={4}>
+            {languagesInIndia.map((lang, index) => (
+              <Grid item xs={12} sm={6} md={4} key={index}>
+                <Card
+                  sx={{
+                    maxWidth: "350px",
+                    height: "400px",
+                    margin: "auto",
+                    boxShadow: 3,
+                  }}
+                >
+                  <CardMedia
+                    component="img"
+                    height="250"
+                    image={lang.image}
+                    alt={lang.name}
+                  />
+                  <CardContent>
+                    <Typography variant="h5" component="div" gutterBottom>
+                      {lang.name}
+                    </Typography>
+                    <Typography variant="subtitle1" color="text.primary">
+                      {lang.location}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {lang.description}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
         </Container>
-
-               </> 
       ) : (
-    // Show message if not logged in
-    <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
-      Please log in to access this page.
-    </Typography>
-  )
-        
-        
-    );
+        // Show message if not logged in
+        <Typography
+          variant="h6"
+          color="error"
+          marginTop="20px"
+          textAlign="center"
+        >
+          Please log in to access this page.
+        </Typography>
+      )}
+    </>
+  );
 };
 
 export default Languages;

@@ -1,6 +1,7 @@
 // src/pages/AboutPage.js
 import React from 'react';
 import { Typography, Container, Box, Card, Grid, Avatar } from '@mui/material';
+import { Helmet } from 'react-helmet';
 
 // Replace with actual logo URLs
 const logos = [
@@ -17,6 +18,14 @@ const logos = [
 const About = () => {
   return (
     <Box sx={{ backgroundColor: 'white', width: '100%', py: 5, mt: '90px' }}>
+      <Helmet>
+        <title>About Us </title>
+        <meta
+          name="description"
+          content="Learn about our vision and mission to bridge cultural gaps and showcase the vibrant heritage of India. Meet our partners and discover our journey."
+        />
+      </Helmet>
+
       <Container maxWidth="md">
         <Box textAlign="center">
           <Typography variant="h3" gutterBottom color="black">About Us</Typography>

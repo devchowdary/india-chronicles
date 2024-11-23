@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Container, Grid, Card, CardContent, Typography, Box } from '@mui/material';
+import { Helmet } from 'react-helmet';
+
 import '@fontsource/playfair-display';
 import Footer from '../components/Footer.jsx';
 import Navbar from '../components/Navbar.jsx';
@@ -55,6 +57,13 @@ const Explore = () => {
 
   return (
     <div>
+       <Helmet>
+        <title>Explore India Temples</title>
+        <meta
+          name="description"
+          content="Learn about our vision and mission to bridge cultural gaps and showcase the vibrant heritage of India. Meet our partners and discover our journey."
+        />
+      </Helmet>
       {/* Only render the content if the user is logged in */}
       {isLoggedIn ? (
         <>

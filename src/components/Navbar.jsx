@@ -115,7 +115,8 @@ const Navbar = ({ onSearch }) => {
         <Box>
           <IconButton 
             onClick={handleUserClick} 
-            sx={{ color: '#000' }}
+            sx={{ color: '#000',borderRadius:'10px' }}
+           
           >
             <AccountCircle />
           </IconButton>
@@ -123,6 +124,7 @@ const Navbar = ({ onSearch }) => {
             anchorEl={anchorEl}
             open={Boolean(anchorEl)}
             onClose={handleCloseMenu}
+            style={{borderRadius:'15px'}}
           >
             <MenuItem component={Link} to="/login" onClick={handleCloseMenu}>Login</MenuItem>
             <MenuItem component={Link} to="/register" onClick={handleCloseMenu}>Registration</MenuItem>
