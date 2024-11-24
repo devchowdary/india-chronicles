@@ -14,7 +14,7 @@ const ViewBookings = () => {
 
   return (
     <Box>
-      <Typography variant="h4" marginLeft={'35%'} gutterBottom>VIEW BOOKINGS</Typography>
+      <Typography variant="h3" marginLeft={'40%'} gutterBottom> BOOKINGS</Typography>
       <TableContainer>
         <Table>
           <TableHead>

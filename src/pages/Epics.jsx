@@ -87,7 +87,7 @@ const Epics = () => {
         />
       </Helmet>
 
-      isLoggedIn ? (
+      {isLoggedIn ? (
         <Container>
             <Typography variant="h3" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='10px'>
                   EPICS OF INDIA
@@ -124,7 +124,7 @@ const Epics = () => {
           <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
             Please log in to access this page.
           </Typography>
-        )
+        )}
         </>
     );
 };

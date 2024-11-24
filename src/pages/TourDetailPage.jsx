@@ -1,15 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Typography, Box, Card, CardMedia, CardContent, Grid, Button, Select, MenuItem, FormControl, InputLabel, Skeleton } from '@mui/material';
-import { Carousel } from 'react-responsive-carousel';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
+import {
+  Typography,
+  Box,
+  Card,
+  CardMedia,
+  CardContent,
+  Grid,
+  Button,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Skeleton,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  IconButton,
+} from "@mui/material";
+import { Carousel } from "react-responsive-carousel";
+import { CheckCircle, Close } from "@mui/icons-material";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const TourDetailPage = () => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const [tour, setTour] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -67,24 +82,25 @@ const TourDetailPage = () => {
       ]
     },
   ];
+  
 
   const [selectedPackage, setSelectedPackage] = useState(packageOptions[0]);
   const [members, setMembers] = useState(1);
   const [totalBill, setTotalBill] = useState(selectedPackage.price);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-    setTimeout(() => {
-      axios.get(`http://localhost:8080/tour-details/respective-tour/${id}`)
-        .then(response => {
-          setTour(response.data);
-          setLoading(false);
-        })
-        .catch(() => {
-          setError("Error fetching tour details");
-          setLoading(false);
-        });
-    }, 2000); // Simulated delay
+    axios
+      .get(`http://localhost:8080/tour-details/respective-tour/${id}`)
+      .then((response) => {
+        setTour(response.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setError("Error fetching tour details");
+        setLoading(false);
+      });
   }, [id]);
 
   useEffect(() => {
@@ -92,7 +108,7 @@ const TourDetailPage = () => {
   }, [selectedPackage, members]);
 
   const handlePackageChange = (event) => {
-    const selectedOption = packageOptions.find(option => option.label === event.target.value);
+    const selectedOption = packageOptions.find((option) => option.label === event.target.value);
     setSelectedPackage(selectedOption);
   };
 
@@ -101,13 +117,18 @@ const TourDetailPage = () => {
   };
 
   const handleBooking = () => {
-    axios.post(`http://localhost:8080/tour-details/book-tour`, { packageType: selectedPackage.label, members, totalBill })
-      .then(response => {
-        toast.success("Booking Successful", { position: "top-right", autoClose: 3000 });
+    axios
+      .post(`http://localhost:8080/tour-details/book-tour`, { packageType: selectedPackage.label, members, totalBill })
+      .then(() => {
+        setDialogOpen(true);
       })
-      .catch(error => {
-        toast.error("Error in booking", { position: "top-right", autoClose: 3000 });
+      .catch(() => {
+        setError("Error in booking");
       });
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
   };
 
   if (loading) {
@@ -129,45 +150,27 @@ const TourDetailPage = () => {
   return (
     <Box padding={4} maxWidth="900px" margin="0 auto" marginTop="80px">
       <Card sx={{ boxShadow: 4, borderRadius: 2, padding: 2, marginTop: 4 }}>
-        <Typography variant="h2" textAlign="center" gutterBottom fontStyle={'unset'}>
+        <Typography variant="h2" textAlign="center" gutterBottom fontStyle="unset">
           {tour.title.toUpperCase()}
         </Typography>
-        <Grid container spacing={4} >
+        <Grid container spacing={4}>
           <Grid item xs={12} md={5}>
             <Carousel showThumbs={false} showStatus={false} infiniteLoop>
               {(selectedPackage.images.length > 0 ? selectedPackage.images : ['https://via.placeholder.com/300']).map((image, index) => (
-                <div key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '200px',marginTop:'100px' }}>
-                  <CardMedia
-                    component="img"
-                    height="300px"
-                    image={image}
-                    alt={`${tour.title} Image ${index + 1}`}
-                    sx={{ borderRadius: 2, objectFit: 'cover' }}
-                  />
+                <div key={index} style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", marginTop: "100px" }}>
+                  <CardMedia component="img" height="300px" image={image} alt={`${tour.title} Image ${index + 1}`} sx={{ borderRadius: 2, objectFit: "cover" }} />
                 </div>
               ))}
             </Carousel>
           </Grid>
           <Grid item xs={12} md={7}>
             <CardContent>
-              <Typography variant="h6" sx={{ color: '#212121' }}>
-                <b>Location:</b> {tour.location}
-              </Typography>
-              <Typography variant="h6" sx={{  color: '#212121', marginTop: 1 }}>
-                <b>Room Type:</b> {selectedPackage.room}
-              </Typography>
-              <Typography variant="h6" sx={{  color: '#212121', marginTop: 1 }}>
-                <b>Food:</b> {selectedPackage.food}
-              </Typography>
-              <Typography variant="h6" sx={{  color: '#212121', marginTop: 1 }}>
-                <b>Wi-Fi:</b> {selectedPackage.wifi}
-              </Typography>
-              <Typography variant="h6" sx={{  color: '#212121', marginTop: 1 }}>
-               <b> TV:</b> {selectedPackage.TV}
-              </Typography>
-              <Typography variant="h6" sx={{  color: '#212121', marginTop: 1 }}>
-                <b>Duration:</b> {selectedPackage.days} Days
-              </Typography>
+              <Typography variant="h6"><b>Location:</b> {tour.location}</Typography>
+              <Typography variant="h6" sx={{ marginTop: 1 }}><b>Room Type:</b> {selectedPackage.room}</Typography>
+              <Typography variant="h6" sx={{ marginTop: 1 }}><b>Food:</b> {selectedPackage.food}</Typography>
+              <Typography variant="h6" sx={{ marginTop: 1 }}><b>Wi-Fi:</b> {selectedPackage.wifi}</Typography>
+              <Typography variant="h6" sx={{ marginTop: 1 }}><b>TV:</b> {selectedPackage.TV}</Typography>
+              <Typography variant="h6" sx={{ marginTop: 1 }}><b>Duration:</b> {selectedPackage.days} Days</Typography>
               <FormControl fullWidth sx={{ marginTop: 3 }}>
                 <InputLabel>Package</InputLabel>
                 <Select value={selectedPackage.label} onChange={handlePackageChange}>
@@ -187,20 +190,29 @@ const TourDetailPage = () => {
               <Typography variant="h5" color="primary" sx={{ marginTop: 3 }}>
                 Total Bill: ₹ {totalBill}
               </Typography>
-              <Button
-                variant="contained"
-                color="primary"
-                fullWidth
-                sx={{ marginTop: 3 }}
-                onClick={handleBooking}
-              >
+              <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 3 }} onClick={handleBooking}>
                 Book Now
               </Button>
             </CardContent>
           </Grid>
         </Grid>
       </Card>
-      <ToastContainer />
+
+      {/* Booking Success Dialog */}
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>
+          <IconButton aria-label="close" onClick={handleCloseDialog} sx={{ position: "absolute", right: 8, top: 8 }}>
+            <Close />
+          </IconButton>
+        </DialogTitle>
+        <DialogContent sx={{ textAlign: "center", padding: 4 }}>
+          <CheckCircle color="success" sx={{ fontSize: "5rem", marginBottom: 2 }} />
+          <Typography variant="h5" gutterBottom>
+            Successfully Booked!
+          </Typography>
+          <Typography>Your package has been booked successfully. Enjoy your trip!</Typography>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

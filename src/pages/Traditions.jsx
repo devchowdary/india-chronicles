@@ -71,7 +71,7 @@ const Traditions = () => {
   return (
     isLoggedIn ? (
     <div style={{ marginTop: '80px' }}>
-      <h1 style={{ marginLeft: '450px' }}>INDIAN TRADITIONS</h1>
+      <h1 style={{ marginLeft: '38%' }}>INDIAN TRADITIONS</h1>
       <Box
         display="flex"
         flexDirection="row"

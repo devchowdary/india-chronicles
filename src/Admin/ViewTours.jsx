@@ -24,7 +24,7 @@ const ViewTours = () => {
   }, []);
 
   return (
-    <Box marginTop="60px">
+    <Box marginTop="20px">
       <Typography variant="h2" align="center" gutterBottom>
         TOURS
       </Typography>

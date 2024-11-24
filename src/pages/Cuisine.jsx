@@ -158,7 +158,7 @@ const Cuisine = () =>
         />
       </Helmet>
 
-        isLoggedIn ? (
+        {isLoggedIn ? (
         <Container>
             <Typography variant="h3" component="h1" gutterBottom align="center" marginTop='80px' marginLeft='0px'>
                 Famous Foods in India.
@@ -195,7 +195,7 @@ const Cuisine = () =>
             <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
               Please log in to access this page.
             </Typography>
-          )
+          )}
         
           </>
     );

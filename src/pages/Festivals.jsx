@@ -169,7 +169,7 @@ const Festivals = () => {
           content="Learn about our vision and mission to bridge cultural gaps and showcase the vibrant heritage of India. Meet our partners and discover our journey."
         />
       </Helmet>
-    isLoggedIn ? (
+    {isLoggedIn ? (
     <Box sx={{ flexGrow: 1, padding: 10,marginTop:'100px',marginLeft:'30px'}} >
       <Grid container spacing={5}>
         {festivals.map((festival, index) => (
@@ -199,12 +199,14 @@ const Festivals = () => {
 
     
     </Box>
-    ) : (
+    
+    )
+     : (
       // Show message if not logged in
       <Typography variant="h6" color="error" marginTop="20px" textAlign="center">
         Please log in to access this page.
       </Typography>
-    )    
+    )  }  
     </>
   );
   
