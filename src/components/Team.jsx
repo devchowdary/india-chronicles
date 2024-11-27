@@ -61,11 +61,11 @@ export default function Team() {
         style={{
           display: 'flex',
           justifyContent: 'center',
-          marginTop: '30px', 
+          marginTop: '0px', 
         }}
       >
-        <Typography variant="h2" component="div" gutterBottom marginTop='50px' marginLeft='50px'>
-          TEAM
+        <Typography variant="h2" component="div" gutterBottom marginTop='10px' marginLeft='50px'>
+          TEAM DETAILS
         </Typography>
       </div>
 
@@ -77,7 +77,7 @@ export default function Team() {
           alignItems: 'center',
           flexDirection: 'column',
           flexGrow: 1,
-          padding: '20px',
+          padding: '0px',
           marginLeft: '10px',
           marginTop: '0px',
         }}

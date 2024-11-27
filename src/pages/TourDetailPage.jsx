@@ -5,89 +5,89 @@ import {
   Typography,
   Box,
   Card,
-  CardMedia,
-  CardContent,
   Grid,
   Button,
   Select,
   MenuItem,
   FormControl,
   InputLabel,
-  Skeleton,
+  TextField,
   Dialog,
   DialogTitle,
   DialogContent,
   IconButton,
+  Divider,
+  CircularProgress,
+  Backdrop,
 } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
-import { CheckCircle, Close } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import dayjs from "dayjs";
+
+import { CheckCircle } from "@mui/icons-material";
+
+// Your existing package options
+const packageOptions = [
+  {
+    label: "Standard Package",
+    price: 2000,
+    food: "Buffet Breakfast Only",
+    room: "Non-AC",
+    bed: "Twin Sharing",
+    wifi: "No",
+    TV: "Yes",
+    images: [
+      "https://thumbs.dreamstime.com/b/bright-comfortable-hotel-room-warm-hotel-rooms-hotel-s-standard-room-130659492.jpg",
+      "https://www.shutterstock.com/image-photo/elegant-comfortable-home-hotel-bedroom-260nw-1269461188.jpg",
+    ],
+  },
+  {
+    label: "Deluxe Package",
+    price: 3000,
+    food: "Buffet Breakfast and Dinner",
+    room: "AC",
+    bed: "Twin Sharing",
+    wifi: "Yes",
+    TV: "Yes",
+    images: [
+      "https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/room-and-suites/deluxe-room/detail/deluxe-room-1.jpg",
+      "https://www.shutterstock.com/image-photo/breakfast-served-stemmed-glasses-colourful-260nw-2508385237.jpg",
+    ],
+  },
+  {
+    label: "Premium Package",
+    price: 5000,
+    food: "All Meals Included",
+    room: "AC",
+    bed: "Single Sharing",
+    wifi: "Yes",
+    TV: "Yes",
+    images: [
+      "https://res.cloudinary.com/simplotel/image/upload/w_500,h_350,h_900,r_0,c_crop,q_80/hotel-daspalla-visakhapatnam/PREMIUM_ROOM_1_l0bxcy.jpg",
+      "https://pix10.agoda.net/property/56835881/0/58d3e1405e412a6cec37459c5c4a9b4.jpeg?ce=0&s=414x232",
+    ],
+  },
+];
 
 const TourDetailPage = () => {
   const { id } = useParams();
   const [tour, setTour] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [bookingInProgress, setBookingInProgress] = useState(false); // Loader state
   const [error, setError] = useState(null);
 
-  const packageOptions = [
-    { 
-      label: 'Standard Package', 
-      price: 25000, 
-      food: 'Buffet Breakfast Only', 
-      room: 'Non-AC', 
-      bed: 'Twin Sharing', 
-      wifi: 'No', 
-      days: 3,
-      TV: 'Yes',
-      images: [
-        'https://thumbs.dreamstime.com/b/bright-comfortable-hotel-room-warm-hotel-rooms-hotel-s-standard-room-130659492.jpg',
-        'https://www.shutterstock.com/image-photo/elegant-comfortable-home-hotel-bedroom-260nw-1269461188.jpg', 
-        'https://www.shutterstock.com/image-photo/fivestar-hotel-resort-foods-decoration-260nw-2345050419.jpg', 
-        'https://lirp.cdn-website.com/bec07775/dms3rep/multi/opt/MSRS_Standart-Room-Garden-View-1-640w.jpg', 
-        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2c/e0/3d/5e/junior-family-room.jpg?w=700&h=-1&s=1'
-      ]
-    },
-    { 
-      label: 'Deluxe Package', 
-      price: 35000,
-      food: 'Buffet Breakfast and Dinner', 
-      room: 'AC', 
-      bed: 'Twin Sharing', 
-      wifi: 'Yes', 
-      days: 5,
-      TV: 'Yes',
-      images: [
-        'https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/room-and-suites/deluxe-room/detail/deluxe-room-1.jpg',
-        'https://www.shutterstock.com/image-photo/breakfast-served-stemmed-glasses-colourful-260nw-2508385237.jpg',
-        'https://www.westgatehotel.com/wp-content/uploads/2024/05/WG-deluxe-scaled.jpg',
-        'https://www.sandiegohotelsweb.com/data/Pics/OriginalPhoto/4544/454445/454445853/pic-the-westgate-hotel-san-diego-87.JPEG',
-        'https://images.squarespace-cdn.com/content/v1/58939a42d2b857c51ea91c0d/1563818489361-3HKVFQ3SZ7P4B5EYPFF9/westgate+hotel+le+fontainebleau+room+sunday+brunch+bloody+mary+obsessed+2.jpg'
-      ]
-    },
-    { 
-      label: 'Premium Package', 
-      price: 50000,
-      food: 'All Meals Included', 
-      room: 'AC', 
-      bed: 'Single Sharing', 
-      wifi: 'Yes', 
-      days: 7,
-      TV: 'Yes',
-      images: [
-        'https://res.cloudinary.com/simplotel/image/upload/x_0,y_0,w_1600,h_900,r_0,c_crop,q_80,fl_progressive/w_500,f_auto,c_fit/hotel-daspalla-visakhapatnam/PREMIUM_ROOM_1_l0bxcy', 
-        'https://pix10.agoda.net/property/56835881/0/58d3e1405e412a6cec37459c5c4a9b4a.jpeg?ce=0&s=414x232', 
-        'https://content.r9cdn.net/rimg/himg/33/2d/51/expediav2-315706-3230508206-308859.jpg?width=500&height=350&xhint=540&yhint=333&crop=true', 
-        'https://imgcld.yatra.com/ytimages/image/upload/t_hotel_srplist/v2587214931/Hotel/Visakhapatnam/00000654/153515847_sgDQXV.jpg', 
-        'https://media.istockphoto.com/id/1014760770/photo/glasses-with-red-wine-and-snacks.jpg?s=170667a&w=0&k=20&c=4_vqvWY-35omCVnAUi-35hr1UgTmyUjw1c2AvJCVm0E='
-      ]
-    },
-  ];
-  
-
-  const [selectedPackage, setSelectedPackage] = useState(packageOptions[0]);
-  const [members, setMembers] = useState(1);
-  const [totalBill, setTotalBill] = useState(selectedPackage.price);
+  const [selectedPackage, setSelectedPackage] = useState(packageOptions[0]); // Default: Standard Package
+  const [members, setMembers] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [days, setDays] = useState(0);
+  const [totalBill, setTotalBill] = useState(0);
+  const [gst, setGst] = useState(0); // GST amount
+  const [totalAmount, setTotalAmount] = useState(0); // Total amount with GST
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [name, setName] = useState(""); // Name field
+  const [email, setEmail] = useState(""); // Email field
 
   useEffect(() => {
     setLoading(true);
@@ -104,8 +104,16 @@ const TourDetailPage = () => {
   }, [id]);
 
   useEffect(() => {
-    setTotalBill(selectedPackage.price * members);
-  }, [selectedPackage, members]);
+    const calculatedTotalBill = selectedPackage.price * members * days;
+    setTotalBill(calculatedTotalBill);
+
+    // Calculate GST and Total Amount
+    const calculatedGst = (calculatedTotalBill * 11) / 100;
+    setGst(calculatedGst);
+
+    const calculatedTotalAmount = calculatedTotalBill + calculatedGst;
+    setTotalAmount(calculatedTotalAmount);
+  }, [selectedPackage, members, days]);
 
   const handlePackageChange = (event) => {
     const selectedOption = packageOptions.find((option) => option.label === event.target.value);
@@ -116,15 +124,58 @@ const TourDetailPage = () => {
     setMembers(event.target.value);
   };
 
+  const handleDateChange = (checkInDate, checkOutDate) => {
+    if (checkInDate && checkOutDate) {
+      const diffDays = dayjs(checkOutDate).diff(dayjs(checkInDate), "day");
+      setDays(diffDays > 0 ? diffDays : 1); // Calculate days
+    }
+  };
+
   const handleBooking = () => {
+    if (!name || !email || !members || !checkIn || !checkOut) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    setBookingInProgress(true); // Show loader
+
+    const bookingData = {
+      name,
+      email,
+      packageType: selectedPackage.label,
+      members,
+      checkIn,
+      checkOut,
+      duration: days, // Send duration to the backend
+      totalBill,
+      gst,
+      totalAmount, // Send total amount to the backend (optional)
+    };
+
     axios
-      .post(`http://localhost:8080/tour-details/book-tour`, { packageType: selectedPackage.label, members, totalBill })
+      .post(`http://localhost:8080/tour-details/book-tour`, bookingData)
       .then(() => {
+        setBookingInProgress(false); // Hide loader
         setDialogOpen(true);
+        resetForm();
       })
       .catch(() => {
+        setBookingInProgress(false); // Hide loader on error
         setError("Error in booking");
       });
+  };
+
+  const resetForm = () => {
+    setSelectedPackage(packageOptions[0]);
+    setMembers("");
+    setCheckIn("");
+    setCheckOut("");
+    setDays(0);
+    setTotalBill(0);
+    setGst(0);
+    setTotalAmount(0);
+    setName(""); // Reset name
+    setEmail(""); // Reset email
   };
 
   const handleCloseDialog = () => {
@@ -133,86 +184,183 @@ const TourDetailPage = () => {
 
   if (loading) {
     return (
-      <Box padding={4} maxWidth="900px" margin="0 auto" marginTop="80px">
-        <Skeleton variant="rectangular" width="100%" height={400} sx={{ borderRadius: 2 }} />
-        <Box mt={3}>
-          <Skeleton variant="text" height={40} width="60%" />
-          <Skeleton variant="text" height={20} width="40%" />
-          <Skeleton variant="text" height={20} width="80%" />
-          <Skeleton variant="rectangular" width="100%" height={200} sx={{ borderRadius: 2, mt: 2 }} />
-        </Box>
-      </Box>
+      <Typography variant="h6" textAlign="center" color="primary" marginTop={4}>
+        Loading Tour Details...
+      </Typography>
     );
   }
 
-  if (error) return <Typography variant="h6" color="error" align="center">{error}</Typography>;
+  if (error)
+    return (
+      <Typography variant="h6" color="error" align="center">
+        {error}
+      </Typography>
+    );
 
   return (
-    <Box padding={4} maxWidth="900px" margin="0 auto" marginTop="80px">
-      <Card sx={{ boxShadow: 4, borderRadius: 2, padding: 2, marginTop: 4 }}>
-        <Typography variant="h2" textAlign="center" gutterBottom fontStyle="unset">
-          {tour.title.toUpperCase()}
-        </Typography>
+    <Box padding={4} maxWidth="1000px" margin="0 auto" marginTop="80px">
+      {/* Backdrop for Loader */}
+      <Backdrop
+        open={bookingInProgress}
+        sx={{
+          zIndex: (theme) => theme.zIndex.drawer + 1,
+          color: "#fff",
+        }}
+      >
+        <Box textAlign="center">
+          <CircularProgress color="inherit" />
+          <Typography variant="h6" marginTop={2}>
+            Booking in progress. Please wait...
+          </Typography>
+        </Box>
+      </Backdrop>
+
+      <Card sx={{ boxShadow: 4, borderRadius: 2, padding: 3 }}>
         <Grid container spacing={4}>
-          <Grid item xs={12} md={5}>
-            <Carousel showThumbs={false} showStatus={false} infiniteLoop>
-              {(selectedPackage.images.length > 0 ? selectedPackage.images : ['https://via.placeholder.com/300']).map((image, index) => (
-                <div key={index} style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "200px", marginTop: "100px" }}>
-                  <CardMedia component="img" height="300px" image={image} alt={`${tour.title} Image ${index + 1}`} sx={{ borderRadius: 2, objectFit: "cover" }} />
+          {/* Left Section */}
+          <Grid item xs={12} md={6}>
+            <Typography variant="h3" fontWeight="bold" gutterBottom>
+              {selectedPackage.label.toLocaleUpperCase()}
+            </Typography>
+            <Divider sx={{ marginY: 2 }} />
+            <Typography variant="h6" gutterBottom>
+              <b>Price:</b> ₹{selectedPackage.price}
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              <b>Food:</b> {selectedPackage.food}
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              <b>Room:</b> {selectedPackage.room}
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              <b>Bed:</b> {selectedPackage.bed}
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              <b>Wi-Fi:</b> {selectedPackage.wifi}
+            </Typography>
+            <Typography variant="h6" gutterBottom>
+              <b>TV:</b> {selectedPackage.TV}
+            </Typography>
+
+            <TextField
+              label="Your Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              fullWidth
+              sx={{ marginY: 2 }}
+            />
+            <TextField
+              label="Your Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+              sx={{ marginY: 2 }}
+            />
+            <FormControl fullWidth sx={{ marginTop: 2 }}>
+              <InputLabel>Package</InputLabel>
+              <Select value={selectedPackage.label} onChange={handlePackageChange}>
+                {packageOptions.map((option, index) => (
+                  <MenuItem key={index} value={option.label}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+
+            <TextField
+              label="Number of Members"
+              value={members}
+              onChange={handleMemberChange}
+              fullWidth
+              type="number"
+              sx={{ marginY: 2 }}
+            />
+            <TextField
+              label="Check-In Date"
+              type="date"
+              value={checkIn}
+              onChange={(e) => setCheckIn(e.target.value)}
+              fullWidth
+              sx={{ marginY: 2 }}
+            />
+            <TextField
+              label="Check-Out Date"
+              type="date"
+              value={checkOut}
+              onChange={(e) => {
+                setCheckOut(e.target.value);
+                handleDateChange(checkIn, e.target.value);
+              }}
+              fullWidth
+              sx={{ marginY: 2 }}
+            />
+
+            {/* Price Calculation Display */}
+           
+           
+
+            <Typography variant="h6" sx={{ marginTop: 2 }}>
+              <b>Total Bill:</b> ₹{totalBill}
+            </Typography>
+            <Typography variant="h6">
+              <b>GST (11%):</b> ₹{gst}
+            </Typography>
+            <Typography variant="h6">
+              <b>Total Amount (With GST):</b> ₹{totalAmount}
+            </Typography>
+
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              onClick={handleBooking}
+              disabled={!members || !checkIn || !checkOut || !name || !email}
+              sx={{ marginTop: 2 }}
+            >
+              Book Tour
+            </Button>
+          </Grid>
+
+          {/* Right Section */}
+          <Grid item xs={12} md={6} marginTop={'200px'}>
+            <Carousel>
+              {selectedPackage.images.map((image, index) => (
+                <div key={index}>
+                  <img src={image} alt={`Slide ${index + 1}`} />
                 </div>
               ))}
             </Carousel>
           </Grid>
-          <Grid item xs={12} md={7}>
-            <CardContent>
-              <Typography variant="h6"><b>Location:</b> {tour.location}</Typography>
-              <Typography variant="h6" sx={{ marginTop: 1 }}><b>Room Type:</b> {selectedPackage.room}</Typography>
-              <Typography variant="h6" sx={{ marginTop: 1 }}><b>Food:</b> {selectedPackage.food}</Typography>
-              <Typography variant="h6" sx={{ marginTop: 1 }}><b>Wi-Fi:</b> {selectedPackage.wifi}</Typography>
-              <Typography variant="h6" sx={{ marginTop: 1 }}><b>TV:</b> {selectedPackage.TV}</Typography>
-              <Typography variant="h6" sx={{ marginTop: 1 }}><b>Duration:</b> {selectedPackage.days} Days</Typography>
-              <FormControl fullWidth sx={{ marginTop: 3 }}>
-                <InputLabel>Package</InputLabel>
-                <Select value={selectedPackage.label} onChange={handlePackageChange}>
-                  {packageOptions.map((option, index) => (
-                    <MenuItem key={index} value={option.label}>{option.label}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <FormControl fullWidth sx={{ marginTop: 3 }}>
-                <InputLabel>Members</InputLabel>
-                <Select value={members} onChange={handleMemberChange}>
-                  {[1, 2, 3, 4, 5].map((count) => (
-                    <MenuItem key={count} value={count}>{count}</MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-              <Typography variant="h5" color="primary" sx={{ marginTop: 3 }}>
-                Total Bill: ₹ {totalBill}
-              </Typography>
-              <Button variant="contained" color="primary" fullWidth sx={{ marginTop: 3 }} onClick={handleBooking}>
-                Book Now
-              </Button>
-            </CardContent>
-          </Grid>
         </Grid>
       </Card>
 
-      {/* Booking Success Dialog */}
+      {/* Booking Confirmation Dialog */}
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-        <DialogTitle>
-          <IconButton aria-label="close" onClick={handleCloseDialog} sx={{ position: "absolute", right: 8, top: 8 }}>
-            <Close />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent sx={{ textAlign: "center", padding: 4 }}>
-          <CheckCircle color="success" sx={{ fontSize: "5rem", marginBottom: 2 }} />
-          <Typography variant="h5" gutterBottom>
-            Successfully Booked!
-          </Typography>
-          <Typography>Your package has been booked successfully. Enjoy your trip!</Typography>
-        </DialogContent>
-      </Dialog>
+  <DialogTitle>
+    <Box display="flex" alignItems="center">
+      <CheckCircle sx={{ color: "success.main", marginRight: 1 }} />
+      Booking Confirmed
+      <IconButton
+        edge="end"
+        color="inherit"
+        onClick={handleCloseDialog}
+        aria-label="close"
+        sx={{ position: "absolute", right: 8, top: 8 }}
+      >
+        <Close />
+      </IconButton>
+    </Box>
+  </DialogTitle>
+  <DialogContent>
+    <Typography variant="body1" color="success.main" paragraph>
+      Congratulations! Your tour has been successfully booked.
+    </Typography>
+    <Typography variant="body2" color="text.secondary" paragraph>
+      We have sent the booking details to the provided email address.
+    </Typography>
+   
+  </DialogContent>
+</Dialog>
     </Box>
   );
 };

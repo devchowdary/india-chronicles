@@ -139,8 +139,8 @@ const ViewQueries = () => {
             {queries.map((query) => (
               <TableRow key={query.id}>
                 <TableCell>{query.id}</TableCell>
-                <TableCell>{query.name}</TableCell>
-                <TableCell>{query.location}</TableCell>
+                <TableCell>{query.name.toUpperCase()}</TableCell>
+                <TableCell>{query.location.toUpperCase()}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleViewDetails(query.id)} color="primary">
                     <Visibility />
@@ -196,7 +196,7 @@ const ViewQueries = () => {
             selectedQuery && (
               <Box>
                 <Typography><strong>ID:</strong> {selectedQuery.id}</Typography>
-                <Typography><strong>Name:</strong> {selectedQuery.name}</Typography>
+                <Typography><strong>Name:</strong> {selectedQuery.name.toUpperCase()}</Typography>
                 <Typography><strong>Email:</strong> {selectedQuery.email}</Typography>
                 <Typography><strong>Phone:</strong> {selectedQuery.phone}</Typography>
                 <Typography><strong>Location:</strong> {selectedQuery.location}</Typography>

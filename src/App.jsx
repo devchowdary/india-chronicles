@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Explore from './pages/Explore';
-import VirtualTours from './pages/VirtualTours';
 import Traditions from './pages/Traditions';
 import HomePage from './components/HomePage';
 
@@ -47,21 +46,20 @@ import SessionManager from './components/SessionManager';
 import UpdateProfile from './pages/UpdateProfile';
 
 
-// Admin Pages (AdminRoutes.js is imported separately)
 import AdminRoutes from './routes/AdminRoutes';
 import AdminNavbar from './Admin/AdminNavbar';
+import { HelmetProvider } from 'react-helmet-async';
 
 const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
-  // Simulate loading screen
   useEffect(() => {
     const hasSeenLoadingScreen = localStorage.getItem('hasSeenLoadingScreen');
 
     const timer = setTimeout(() => {
       setIsLoading(false);
       localStorage.setItem('hasSeenLoadingScreen', 'true');
-    }, 4000); // 4 seconds for the loading screen
+    }, 4000); 
 
     if (hasSeenLoadingScreen) {
       setIsLoading(false);
@@ -70,7 +68,6 @@ const App = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Role-based access control
   const userRole = localStorage.getItem('role'); // Assuming 'role' is stored in localStorage
 
   if (isLoading) {
@@ -78,6 +75,7 @@ const App = () => {
   }
 
   return (
+    <HelmetProvider>
     <Router>
       {/* Render Navbar only if the role is not ADMIN */}
       {userRole === 'ADMIN' ? <AdminNavbar /> : <Navbar />}
@@ -87,7 +85,6 @@ const App = () => {
         {/* User Routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/explore" element={<Explore />} />
-        <Route path="/tours" element={<VirtualTours />} />
         <Route path="/traditions" element={<Traditions />} />
         <Route path="/tajMahal" element={<TajMahal />} />
         <Route path="/qutubMinar" element={<QutubMinar />} />
@@ -119,8 +116,10 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
         <Route path="/terms-of-service" element={<TermsAndServicesPage />} />
+        
         <Route path="/view-tours" element={<ViewTours />} />
         <Route path="/view-tours/:id" element={<TourDetails />} />
+
         <Route path="/tour-detail/:id" element={<TourDetailPage />} />
         <Route path="/expert-contact" element={<TalkToExpertPage />} />
         <Route path="/profile" element={<Profile />} />
@@ -135,6 +134,7 @@ const App = () => {
       </Routes>
       <Footer />
     </Router>
+    </HelmetProvider>
   );
 };
 

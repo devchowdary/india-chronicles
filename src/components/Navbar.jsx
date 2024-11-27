@@ -1,13 +1,27 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, Button, Box, IconButton, InputBase, Menu, MenuItem } from '@mui/material';
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Box,
+  IconButton,
+  InputBase,
+  Menu,
+  MenuItem,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+} from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Search as SearchIcon, AccountCircle } from '@mui/icons-material';
+import { Search as SearchIcon, AccountCircle, Menu as MenuIcon } from '@mui/icons-material';
 import logo from '../images/logo.jpg';
 
 const Navbar = ({ onSearch }) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false); // State to track if search is open
   const [searchInput, setSearchInput] = useState(''); // State for search input
   const [anchorEl, setAnchorEl] = useState(null); // State for user menu anchor
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false); // State for mobile drawer
 
   const handleSearchClick = () => {
     setIsSearchOpen(!isSearchOpen); // Toggle search field open/close
@@ -26,45 +40,54 @@ const Navbar = ({ onSearch }) => {
     setAnchorEl(null); // Close dropdown menu
   };
 
+  const toggleDrawer = (open) => () => {
+    setIsDrawerOpen(open); // Toggle the drawer state
+  };
+
   return (
-    <AppBar 
-      position="fixed" 
+    <AppBar
+      position="fixed"
       sx={{
         backgroundColor: '#f5f5f5',
         color: '#000',
         boxShadow: 'none',
-        zIndex: 1201, // Ensure navbar stays on top
+        zIndex: 1201,
         transition: 'background-color 0.3s ease',
       }}
     >
       <Toolbar sx={{ justifyContent: 'space-between' }}>
         {/* Logo Image - Align Left */}
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <Button 
-            component={Link} 
-            to="/" 
-            sx={{ 
-              display: 'flex', 
-              alignItems: 'center', 
+          <Button
+            component={Link}
+            to="/"
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
               justifyContent: 'center',
-              padding: 0
+              padding: 0,
             }}
           >
-            <img 
-              src={logo} 
-              alt="India Chronicles Logo" 
-              style={{ height: '60px', width: 'auto', borderRadius: "25px", backgroundColor: 'orange' }} 
+            <img
+              src={logo}
+              alt="India Chronicles Logo"
+              style={{
+                height: '50px',
+                width: 'auto',
+                borderRadius: '25px',
+                backgroundColor: 'orange',
+              }}
             />
           </Button>
         </Box>
 
-        {/* Navigation Links - Center */}
+        {/* Navigation Links - Hidden on Small Screens */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, gap: 3 }}>
           <Button color="inherit" component={Link} to="/" sx={{ fontSize: '0.95rem', padding: '6px 12px' }}>
             Home
           </Button>
           <Button color="inherit" component={Link} to="/explore" sx={{ fontSize: '0.95rem', padding: '6px 12px' }}>
-            Temples 
+            Temples
           </Button>
           <Button color="inherit" component={Link} to="/view-tours" sx={{ fontSize: '0.95rem', padding: '6px 12px' }}>
             Tours
@@ -77,15 +100,15 @@ const Navbar = ({ onSearch }) => {
           </Button>
         </Box>
 
-        {/* Search Icon - Align Right */}
+        {/* Search Icon */}
         <Box sx={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-          <IconButton 
-            onClick={handleSearchClick} 
-            sx={{ 
-              color: '#000', 
-              padding: 0, 
-              mr: isSearchOpen ? 1 : 0, 
-              transition: 'all 0.3s ease' 
+          <IconButton
+            onClick={handleSearchClick}
+            sx={{
+              color: '#000',
+              padding: 0,
+              mr: isSearchOpen ? 1 : 0,
+              transition: 'all 0.3s ease',
             }}
           >
             <SearchIcon />
@@ -111,24 +134,50 @@ const Navbar = ({ onSearch }) => {
           )}
         </Box>
 
+        {/* Hamburger Menu for Mobile Screens */}
+        <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <IconButton onClick={toggleDrawer(true)} sx={{ color: '#000' }}>
+            <MenuIcon />
+          </IconButton>
+        </Box>
+
+        <Drawer anchor="right" open={isDrawerOpen} onClose={toggleDrawer(false)}>
+          <Box sx={{ width: 250 }}>
+            <List>
+              <ListItem button component={Link} to="/" onClick={toggleDrawer(false)}>
+                <ListItemText primary="Home" />
+              </ListItem>
+              <ListItem button component={Link} to="/explore" onClick={toggleDrawer(false)}>
+                <ListItemText primary="Temples" />
+              </ListItem>
+              <ListItem button component={Link} to="/view-tours" onClick={toggleDrawer(false)}>
+                <ListItemText primary="Tours" />
+              </ListItem>
+              <ListItem button component={Link} to="/traditions" onClick={toggleDrawer(false)}>
+                <ListItemText primary="Traditions" />
+              </ListItem>
+              <ListItem button component={Link} to="/monuments" onClick={toggleDrawer(false)}>
+                <ListItemText primary="Monuments" />
+              </ListItem>
+            </List>
+          </Box>
+        </Drawer>
+
         {/* User Icon - Dropdown Menu */}
         <Box>
-          <IconButton 
-            onClick={handleUserClick} 
-            sx={{ color: '#000',borderRadius:'10px' }}
-           
-          >
+          <IconButton onClick={handleUserClick} sx={{ color: '#000', borderRadius: '10px' }}>
             <AccountCircle />
           </IconButton>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleCloseMenu}
-            style={{borderRadius:'15px'}}
-          >
-            <MenuItem component={Link} to="/login" onClick={handleCloseMenu}>Login</MenuItem>
-            <MenuItem component={Link} to="/register" onClick={handleCloseMenu}>Registration</MenuItem>
-            <MenuItem component={Link} to="/profile" onClick={handleCloseMenu}>Profile</MenuItem>
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleCloseMenu}>
+            <MenuItem component={Link} to="/login" onClick={handleCloseMenu}>
+              Login
+            </MenuItem>
+            <MenuItem component={Link} to="/register" onClick={handleCloseMenu}>
+              Registration
+            </MenuItem>
+            <MenuItem component={Link} to="/profile" onClick={handleCloseMenu}>
+              Profile
+            </MenuItem>
           </Menu>
         </Box>
       </Toolbar>

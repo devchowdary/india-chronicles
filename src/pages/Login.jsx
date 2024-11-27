@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -14,9 +14,9 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Helmet } from 'react-helmet';
+import { Helmet, HelmetProvider } from 'react-helmet-async';
 
-// Function to generate random CAPTCHA
+// Function to generate a random CAPTCHA
 const generateCaptcha = () => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   return Array.from({ length: 6 }, () =>
@@ -26,17 +26,32 @@ const generateCaptcha = () => {
 
 const Login = () => {
   const navigate = useNavigate();
+
+  // State variables
   const [credentials, setCredentials] = useState({ email: '', password: '', captchaInput: '' });
   const [message, setMessage] = useState('');
   const [captcha, setCaptcha] = useState(generateCaptcha());
   const [showPassword, setShowPassword] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Update form input state
+  // Redirect user based on their role after login
+  useEffect(() => {
+    if (isAuthenticated) {
+      const role = localStorage.getItem('role');
+      if (role === 'ADMIN') {
+        navigate('/admin-bookings'); // Admin dashboard
+      } else {
+        navigate('/'); // User homepage
+      }
+    }
+  }, [isAuthenticated, navigate]);
+
+  // Handle input field changes
   const handleChange = (e) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
-  // Generate a new CAPTCHA
+  // Generate a new CAPTCHA when requested
   const handleCaptchaClick = () => {
     setCaptcha(generateCaptcha());
     setCredentials({ ...credentials, captchaInput: '' });
@@ -47,6 +62,7 @@ const Login = () => {
     e.preventDefault();
     const { email, password, captchaInput } = credentials;
 
+    // Validate input
     if (!email || !password) {
       setMessage('Please enter both email and password');
       return;
@@ -60,6 +76,7 @@ const Login = () => {
     }
 
     try {
+      // Make API call to login endpoint
       const response = await axios.post('http://localhost:8080/user/login', null, {
         params: {
           usernameOrEmail: email,
@@ -68,19 +85,12 @@ const Login = () => {
       });
 
       if (response.data.token) {
-        // Save login data to localStorage
+        // Save user details to localStorage
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('username', response.data.username);
         localStorage.setItem('role', response.data.role);
 
-        // Redirect based on role
-        if (response.data.role === 'ADMIN') {
-          navigate('/admin-bookings'); // Admin-specific dashboard
-        } else {
-          navigate('/'); // User-specific homepage
-        }
-
-        // Show toast notification after navigation
+        setIsAuthenticated(true); // Set authentication status
         toast.success('Login Successful!', { autoClose: 2000 });
       } else {
         setMessage(response.data.error || 'Invalid login credentials');
@@ -96,7 +106,7 @@ const Login = () => {
   };
 
   return (
-    <>
+    <HelmetProvider>
       <Helmet>
         <title>Login</title>
         <meta
@@ -112,6 +122,7 @@ const Login = () => {
           </Typography>
           <form onSubmit={handleLogin}>
             <Grid container spacing={2}>
+              {/* Email Input */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -124,6 +135,8 @@ const Login = () => {
                   required
                 />
               </Grid>
+
+              {/* Password Input */}
               <Grid item xs={12}>
                 <TextField
                   fullWidth
@@ -148,6 +161,7 @@ const Login = () => {
                 />
               </Grid>
 
+              {/* CAPTCHA */}
               <Grid item xs={12}>
                 <Box
                   sx={{
@@ -183,6 +197,7 @@ const Login = () => {
                 </Box>
               </Grid>
 
+              {/* Submit Button */}
               <Grid item xs={12}>
                 <Button fullWidth variant="contained" color="primary" type="submit">
                   Login
@@ -210,10 +225,10 @@ const Login = () => {
           </Typography>
         </Paper>
 
-        {/* Toast Container */}
+        {/* Toast Notification Container */}
         <ToastContainer />
       </Container>
-    </>
+    </HelmetProvider>
   );
 };
 

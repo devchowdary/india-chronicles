@@ -10,36 +10,45 @@ const Footer = () => {
   return (
     <Box
       component="footer"
-      sx={{   
+      sx={{
         backgroundColor: '#1e1e1e',
         color: 'white',
-        padding: '40px 20px',
+        padding: { xs: '20px', md: '40px 20px' },
         position: 'relative',
         bottom: 0,
-        height:'180px',
         width: '100%',
         textAlign: 'center',
         boxShadow: '0px -2px 10px rgba(0, 0, 0, 0.3)',
-        marginTop:'100px'
+        marginTop: '100px',
       }}
     >
       {/* Main Content */}
       <Grid container spacing={4} justifyContent="center">
+        {/* Indian Heritage Section */}
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 'bold', marginBottom: 2, textAlign: { xs: 'center', md: 'left' } }}
+          >
             Indian Heritage
           </Typography>
-          <Typography variant="body2">
+          <Typography
+            variant="body2"
+            sx={{ textAlign: { xs: 'center', md: 'left' }, paddingX: { xs: 2, md: 0 } }}
+          >
             Explore the rich culture and history of India through monuments, cuisine, and more.
           </Typography>
         </Grid>
 
-        {/* Links Section */}
+        {/* Quick Links Section */}
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 'bold', marginBottom: 2, textAlign: { xs: 'center', md: 'left' } }}
+          >
             Quick Links
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" sx={{ textAlign: { xs: 'center', md: 'left' } }}>
             <Link href="/" color="inherit" underline="hover">
               Home
             </Link>
@@ -60,10 +69,13 @@ const Footer = () => {
 
         {/* Social Media Section */}
         <Grid item xs={12} sm={6} md={3}>
-          <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: 2 }}>
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 'bold', marginBottom: 2, textAlign: { xs: 'center', md: 'left' } }}
+          >
             Follow Us
           </Typography>
-          <Box>
+          <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
             <IconButton color="inherit" href="https://www.instagram.com" target="_blank">
               <InstagramIcon />
             </IconButton>
@@ -91,7 +103,8 @@ const Footer = () => {
         <Typography variant="body2" sx={{ marginTop: 1 }}>
           <Link href="/privacy-policy" color="inherit" underline="hover">
             Privacy Policy
-          </Link>{' | '}
+          </Link>{' '}
+          |{' '}
           <Link href="/terms-of-service" color="inherit" underline="hover">
             Terms of Service
           </Link>

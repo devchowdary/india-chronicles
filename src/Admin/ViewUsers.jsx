@@ -133,7 +133,7 @@ const ViewUsers = () => {
               <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
               <Typography><strong>Phone:</strong> {selectedUser.phone}</Typography>
               <Typography><strong>Location:</strong> {selectedUser.location}</Typography>
-              <Typography><strong>Role:</strong> {selectedUser.role}</Typography>
+              <Typography><strong>Role:</strong> {selectedUser.role} user</Typography>
             </Box>
           ) : (
             <Typography>Loading...</Typography>

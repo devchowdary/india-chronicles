@@ -39,7 +39,7 @@ const ViewTours = () => {
   }, [navigate, isLoggedIn]);
 
   return (
-    <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="center" alignItems="center" gap={6} marginTop="60px">
+    <Box display="flex" flexDirection="row" flexWrap="wrap" justifyContent="center" alignItems="center" gap={6} marginTop="40px">
       <Typography variant="h2">TOURS</Typography>
       <Grid container spacing={3} marginLeft={'170px'}>
         {loading ? (
