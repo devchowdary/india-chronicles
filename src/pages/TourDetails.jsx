@@ -11,7 +11,7 @@ const TourDetails = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setTimeout(() => { // Simulate a slight delay
+    setTimeout(() => {
       axios.get(`http://localhost:8080/tour-details/respective-tour/${id}`)
         .then(response => {
           setTour(response.data);
@@ -21,12 +21,11 @@ const TourDetails = () => {
           setError("Error fetching tour details");
           setLoading(false);
         });
-    }, 1500); // 1.5-second delay for skeleton loading effect
+    }, 1500); // Simulate a 1.5-second delay for skeleton loading effect
   }, [id]);
 
   const fallbackImage = 'https://via.placeholder.com/300';
 
-  
   const handleTalkToExpert = () => {
     navigate('/expert-contact');
   };
@@ -123,43 +122,9 @@ const TourDetails = () => {
       </Box>
 
       <Box mt={6}>
+        {/* Removed the rest of the card content except for the two options */}
         <Card sx={{ boxShadow: 5, borderRadius: 2, padding: 2, marginBottom: 4 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
-              {loading ? (
-                <Skeleton variant="rectangular" height={200} />
-              ) : (
-                <CardMedia
-                  component="img"
-                  height="200"
-                  image={tour.images && tour.images.length > 0 ? tour.images[0] : fallbackImage}
-                  alt={tour.title}
-                  sx={{ borderRadius: 2, objectFit: 'cover' }}
-                  onError={(e) => e.target.src = fallbackImage}
-                />
-              )}
-            </Grid>
-
-            <Grid item xs={12} md={5}>
-              {loading ? (
-                <>
-                  <Skeleton width="80%" height={30} />
-                  <Skeleton width="40%" height={30} />
-                  <Skeleton width="60%" height={20} />
-                  <Skeleton width="70%" height={20} />
-                </>
-              ) : (
-                <>
-                  <Typography variant="h6" sx={{ fontWeight: 600 }}>{tour.title}</Typography>
-                  <Rating value={4.5} precision={0.5} readOnly />
-                  <Typography variant="body2" color="textSecondary" sx={{ mt: 1 }}>{tour.reviews || 16} Reviews</Typography>
-                  <Typography variant="subtitle2" color="primary" sx={{ mt: 1 }}>All Inclusive</Typography>
-                  <Typography variant="body2" color="textSecondary">Days: {tour.days || 5} | Destinations: {tour.destinations || '1 Country 3 Cities'} | Departures: {tour.departures || '8 Dates from 2 Cities'}</Typography>
-                  <Typography variant="body2" color="textSecondary" sx={{ mt: 2 }}><strong>Tour Highlights:</strong> {tour.highlights || 'Expert tour manager all throughout the tour. All meals included.'}</Typography>
-                </>
-              )}
-            </Grid>
-
             <Grid item xs={12} md={3} textAlign="center" marginTop={'30px'}>
               {loading ? (
                 <>
@@ -169,10 +134,13 @@ const TourDetails = () => {
                 </>
               ) : (
                 <>
-                  <Typography variant="h6" color="textPrimary">Starts from <strong>₹{tour.price || '25,000'}</strong></Typography>
-                  <Typography variant="body2" color="textSecondary">per person on twin sharing</Typography>
-                  <Button variant="contained" color="primary" sx={{ mt: 2, width: '100%' }} href={`/tour-detail/${tour.id}`}>View Tour Details</Button>
-                  <Button variant="text" color="primary" sx={{ mt: 1, width: '100%', fontWeight: 'bold' }} onClick={handleTalkToExpert}>Talk to a Travel Expert</Button>
+                  {/* Display only the two buttons */}
+                  <Button variant="contained" color="primary" sx={{ mt: 2, width: '100%' }} href={`/tour-detail/${tour.id}`}>
+                    View Tour Details
+                  </Button>
+                  <Button variant="text" color="primary" sx={{ mt: 1, width: '100%', fontWeight: 'bold' }} onClick={handleTalkToExpert}>
+                    Talk to a Travel Expert
+                  </Button>
                 </>
               )}
             </Grid>

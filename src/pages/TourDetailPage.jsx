@@ -20,55 +20,10 @@ import {
   CircularProgress,
   Backdrop,
 } from "@mui/material";
-import { Carousel } from "react-responsive-carousel";
 import { Close } from "@mui/icons-material";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
 import dayjs from "dayjs";
-
-import { CheckCircle } from "@mui/icons-material";
-
-// Your existing package options
-const packageOptions = [
-  {
-    label: "Standard Package",
-    price: 2000,
-    food: "Buffet Breakfast Only",
-    room: "Non-AC",
-    bed: "Twin Sharing",
-    wifi: "No",
-    TV: "Yes",
-    images: [
-      "https://thumbs.dreamstime.com/b/bright-comfortable-hotel-room-warm-hotel-rooms-hotel-s-standard-room-130659492.jpg",
-      "https://www.shutterstock.com/image-photo/elegant-comfortable-home-hotel-bedroom-260nw-1269461188.jpg",
-    ],
-  },
-  {
-    label: "Deluxe Package",
-    price: 3000,
-    food: "Buffet Breakfast and Dinner",
-    room: "AC",
-    bed: "Twin Sharing",
-    wifi: "Yes",
-    TV: "Yes",
-    images: [
-      "https://www.oberoihotels.com/-/media/oberoi-hotels/website-images/the-oberoi-new-delhi/room-and-suites/deluxe-room/detail/deluxe-room-1.jpg",
-      "https://www.shutterstock.com/image-photo/breakfast-served-stemmed-glasses-colourful-260nw-2508385237.jpg",
-    ],
-  },
-  {
-    label: "Premium Package",
-    price: 5000,
-    food: "All Meals Included",
-    room: "AC",
-    bed: "Single Sharing",
-    wifi: "Yes",
-    TV: "Yes",
-    images: [
-      "https://res.cloudinary.com/simplotel/image/upload/w_500,h_350,h_900,r_0,c_crop,q_80/hotel-daspalla-visakhapatnam/PREMIUM_ROOM_1_l0bxcy.jpg",
-      "https://pix10.agoda.net/property/56835881/0/58d3e1405e412a6cec37459c5c4a9b4.jpeg?ce=0&s=414x232",
-    ],
-  },
-];
 
 const TourDetailPage = () => {
   const { id } = useParams();
@@ -77,7 +32,9 @@ const TourDetailPage = () => {
   const [bookingInProgress, setBookingInProgress] = useState(false); // Loader state
   const [error, setError] = useState(null);
 
-  const [selectedPackage, setSelectedPackage] = useState(packageOptions[0]); // Default: Standard Package
+  const [selectedHotel, setSelectedHotel] = useState(null); // To store selected hotel details dynamically
+  const [hotels, setHotels] = useState([]); // To store all hotels from the backend
+
   const [members, setMembers] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
@@ -91,35 +48,42 @@ const TourDetailPage = () => {
 
   const username = localStorage.getItem("username") || "";
 
+  // Fetch hotels from the backend
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`http://localhost:8080/tour-details/respective-tour/${id}`)
+      .get("http://localhost:8080/hotels/display-hotels")
       .then((response) => {
-        setTour(response.data);
+        setHotels(response.data);
+        if (response.data.length > 0) {
+          setSelectedHotel(response.data[0]); // Default to the first hotel
+        }
         setLoading(false);
       })
       .catch(() => {
-        setError("Error fetching tour details");
+        setError("Error fetching hotel details");
         setLoading(false);
       });
-  }, [id]);
+  }, []);
 
+  // Recalculate the total price, GST, and total amount whenever selectedHotel, members, or days change
   useEffect(() => {
-    const calculatedTotalBill = selectedPackage.price * members * days;
-    setTotalBill(calculatedTotalBill);
+    if (selectedHotel && members && days > 0) {
+      const calculatedTotalBill = selectedHotel.price * members * days;
+      setTotalBill(calculatedTotalBill);
 
-    // Calculate GST and Total Amount
-    const calculatedGst = (calculatedTotalBill * 11) / 100;
-    setGst(calculatedGst);
+      // Calculate GST and Total Amount
+      const calculatedGst = (calculatedTotalBill * 11) / 100; // 11% GST
+      setGst(calculatedGst);
 
-    const calculatedTotalAmount = calculatedTotalBill + calculatedGst;
-    setTotalAmount(calculatedTotalAmount);
-  }, [selectedPackage, members, days]);
+      const calculatedTotalAmount = calculatedTotalBill + calculatedGst;
+      setTotalAmount(calculatedTotalAmount);
+    }
+  }, [selectedHotel, members, days]);
 
-  const handlePackageChange = (event) => {
-    const selectedOption = packageOptions.find((option) => option.label === event.target.value);
-    setSelectedPackage(selectedOption);
+  const handleHotelChange = (hotelId) => {
+    const hotel = hotels.find((h) => h.id === hotelId);
+    setSelectedHotel(hotel);
   };
 
   const handleMemberChange = (event) => {
@@ -142,9 +106,10 @@ const TourDetailPage = () => {
     setBookingInProgress(true); // Show loader
 
     const bookingData = {
-      name:username,
+      name: username,
       email,
-      packageType: selectedPackage.label,
+      packageType: selectedHotel.packageType, // Dynamically use the selected hotel's package type
+      hotelName: selectedHotel.name, // Add hotel name
       members,
       checkIn,
       checkOut,
@@ -168,7 +133,6 @@ const TourDetailPage = () => {
   };
 
   const resetForm = () => {
-    setSelectedPackage(packageOptions[0]);
     setMembers("");
     setCheckIn("");
     setCheckOut("");
@@ -221,27 +185,41 @@ const TourDetailPage = () => {
         <Grid container spacing={4}>
           {/* Left Section */}
           <Grid item xs={12} md={6}>
-            <Typography variant="h3" fontWeight="bold" gutterBottom>
-              {selectedPackage.label.toLocaleUpperCase()}
+          <Typography variant="h3" fontWeight="bold" gutterBottom>
+              {selectedHotel?.name?.toLocaleUpperCase()}
             </Typography>
+          <FormControl fullWidth sx={{ marginTop: 2 }}>
+              <InputLabel>Select Hotel</InputLabel>
+              <Select
+                value={selectedHotel?.id || ""}
+                onChange={(e) => handleHotelChange(e.target.value)}
+              >
+                {hotels.map((hotel) => (
+                  <MenuItem key={hotel.id} value={hotel.id}>
+                    {hotel.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+           
             <Divider sx={{ marginY: 2 }} />
             <Typography variant="h6" gutterBottom>
-              <b>Price:</b> ₹{selectedPackage.price}
+              <b>Price:</b> ₹{selectedHotel?.price}
             </Typography>
             <Typography variant="h6" gutterBottom>
-              <b>Food:</b> {selectedPackage.food}
+              <b>Food:</b> {selectedHotel?.food}
             </Typography>
             <Typography variant="h6" gutterBottom>
-              <b>Room:</b> {selectedPackage.room}
+              <b>Room:</b> {selectedHotel?.room}
             </Typography>
             <Typography variant="h6" gutterBottom>
-              <b>Bed:</b> {selectedPackage.bed}
+              <b>Bed:</b> {selectedHotel?.bed}
             </Typography>
             <Typography variant="h6" gutterBottom>
-              <b>Wi-Fi:</b> {selectedPackage.wifi}
+              <b>Wi-Fi:</b> {selectedHotel?.wifi}
             </Typography>
             <Typography variant="h6" gutterBottom>
-              <b>TV:</b> {selectedPackage.TV}
+              <b>TV:</b> {selectedHotel?.tv}
             </Typography>
 
             <TextField
@@ -259,16 +237,7 @@ const TourDetailPage = () => {
               fullWidth
               sx={{ marginY: 2 }}
             />
-            <FormControl fullWidth sx={{ marginTop: 2 }}>
-              <InputLabel>Package</InputLabel>
-              <Select value={selectedPackage.label} onChange={handlePackageChange}>
-                {packageOptions.map((option, index) => (
-                  <MenuItem key={index} value={option.label}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+           
 
             <TextField
               label="Number of Members"
@@ -298,38 +267,35 @@ const TourDetailPage = () => {
               sx={{ marginY: 2 }}
             />
 
-            {/* Price Calculation Display */}
-           
-           
-
-            <Typography variant="h6" sx={{ marginTop: 2 }}>
-              <b>Total Bill:</b> ₹{totalBill}
+            <Typography variant="h6" gutterBottom>
+              <b>Total Bill: </b>₹{totalBill}
             </Typography>
-            <Typography variant="h6">
-              <b>GST (11%):</b> ₹{gst}
+            <Typography variant="h6" gutterBottom>
+              <b>GST (11%): </b>₹{gst}
             </Typography>
-            <Typography variant="h6">
-              <b>Total Amount (With GST):</b> ₹{totalAmount}
+            <Typography variant="h5" gutterBottom>
+              <b>Total Amount: </b>₹{totalAmount}
             </Typography>
-
             <Button
               variant="contained"
               color="primary"
-              fullWidth
               onClick={handleBooking}
-              disabled={!members || !checkIn || !checkOut  || !email}
-              sx={{ marginTop: 2 }}
+              fullWidth
             >
-              Book Tour
+              Confirm Booking
             </Button>
           </Grid>
 
           {/* Right Section */}
-          <Grid item xs={12} md={6} marginTop={'200px'} minHeight='300px' maxHeight='300px'>
+          <Grid item xs={12} md={6} marginTop={'20%'}>
             <Carousel>
-              {selectedPackage.images.map((image, index) => (
+              {selectedHotel?.images?.map((image, index) => (
                 <div key={index}>
-                  <img src={image} alt={`Slide ${index + 1}`} />
+                  <img
+                    src={image}
+                    alt={`tour-image-${index}`}
+                    style={{ maxHeight: "500px", objectFit: "cover" }}
+                  />
                 </div>
               ))}
             </Carousel>
@@ -339,31 +305,18 @@ const TourDetailPage = () => {
 
       {/* Booking Confirmation Dialog */}
       <Dialog open={dialogOpen} onClose={handleCloseDialog}>
-  <DialogTitle>
-    <Box display="flex" alignItems="center">
-      <CheckCircle sx={{ color: "success.main", marginRight: 1 }} />
-      Booking Confirmed
-      <IconButton
-        edge="end"
-        color="inherit"
-        onClick={handleCloseDialog}
-        aria-label="close"
-        sx={{ position: "absolute", right: 8, top: 8 }}
-      >
-        <Close />
-      </IconButton>
-    </Box>
-  </DialogTitle>
-  <DialogContent>
-    <Typography variant="body1" color="success.main" paragraph>
-      Congratulations! Your tour has been successfully booked.
-    </Typography>
-    <Typography variant="body2" color="text.secondary" paragraph>
-      We have sent the booking details to the provided email address.
-    </Typography>
-   
-  </DialogContent>
-</Dialog>
+        <DialogTitle>Booking Successful</DialogTitle>
+        <DialogContent>
+          <Typography variant="h6" align="center" color="primary">
+            Your booking has been confirmed! We will send you an email shortly.
+          </Typography>
+          <Box display="flex" justifyContent="center" marginTop={2}>
+            <IconButton onClick={handleCloseDialog}>
+              <Close />
+            </IconButton>
+          </Box>
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

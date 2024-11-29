@@ -15,19 +15,23 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'; // Import the Admin icon
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const AdminNavbar = () => {
-  const [anchorEl, setAnchorEl] = useState(null); // For dropdown menu
+  const [dataAnchorEl, setDataAnchorEl] = useState(null); // For Data dropdown
+  const [subMenuAnchorEl, setSubMenuAnchorEl] = useState(null); // For left-side dropdown
   const [drawerOpen, setDrawerOpen] = useState(false); // For mobile drawer
+  const [activeCategory, setActiveCategory] = useState(null); // Track active submenu
   const navigate = useNavigate();
 
-  const handleMenuOpen = (event) => {
+  const handleMenuOpen = (setAnchorEl, category = null) => (event) => {
     setAnchorEl(event.currentTarget);
+    if (category) setActiveCategory(category);
   };
 
-  const handleMenuClose = () => {
+  const handleMenuClose = (setAnchorEl) => () => {
     setAnchorEl(null);
+    setActiveCategory(null);
   };
 
   const handleLogout = () => {
@@ -47,14 +51,20 @@ const AdminNavbar = () => {
     color: 'inherit',
   };
 
-  const menuItems = [
-    { text: 'View Tours', path: '/admin/tours/view' },
-    { text: 'Add Tour', path: '/admin/tours/add' },
-    { text: 'View Users', path: '/admin/users/view' },
-    { text: 'Admin Profile', path: '/admin/profile' },
-    { text: 'View Queries', path: '/admin/queries/view' },
-    { text: 'View Bookings', path: '/admin-bookings' },
-  ];
+  const subMenuItems = {
+    Tours: [
+      { text: 'View Tours', path: '/admin/tours/view' },
+      { text: 'Add Tour', path: '/admin/tours/add' },
+    ],
+    Monuments: [
+      { text: 'View Monuments', path: '/admin/view-monuments' },
+      { text: 'Add Monument', path: '/admin/add-monument' },
+    ],
+    Hotels: [
+      { text: 'View Hotels', path: '/admin/view-hotels' },
+      { text: 'Add Hotel', path: '/admin/add-hotel' },
+    ],
+  };
 
   const handleLogoClick = () => {
     navigate('/admin-dashboard'); // Redirect to Admin Dashboard
@@ -66,7 +76,6 @@ const AdminNavbar = () => {
         {/* Admin Logo on the Left */}
         <Box sx={{ flexGrow: 1 }}>
           <IconButton onClick={handleLogoClick} edge="start" color="inherit">
-            {/* Admin Panel icon */}
             <AdminPanelSettingsIcon />
           </IconButton>
         </Box>
@@ -80,34 +89,69 @@ const AdminNavbar = () => {
 
         {/* Links for Desktop */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, justifyContent: 'center' }}>
-          <Button color="inherit" sx={{ mx: 2 }} onClick={handleMenuOpen}>
-            Tours
+          {/* Main Data Dropdown */}
+          <Button
+            color="inherit"
+            sx={{ mx: 2 }}
+            onClick={handleMenuOpen(setDataAnchorEl)}
+          >
+            Data
           </Button>
-          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-            <MenuItem onClick={handleMenuClose}>
-              <Link to="/admin/tours/view" style={linkStyle}>
-                View Tours
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              <Link to="/admin/tours/add" style={linkStyle}>
-                Add Tour
-              </Link>
-            </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
-              <Link to="/admin/add-monument" style={linkStyle}>
-                Add Monument
-              </Link>
-            </MenuItem>
+          <Menu
+            anchorEl={dataAnchorEl}
+            open={Boolean(dataAnchorEl)}
+            onClose={handleMenuClose(setDataAnchorEl)}
+          >
+            {Object.keys(subMenuItems).map((category) => (
+              <MenuItem
+                key={category}
+                onClick={handleMenuOpen(setSubMenuAnchorEl, category)}
+                onMouseEnter={handleMenuOpen(setSubMenuAnchorEl, category)}
+              >
+                {category}
+              </MenuItem>
+            ))}
           </Menu>
 
-          {menuItems.slice(2).map((item) => (
-            <Button key={item.text} color="inherit" sx={{ mx: 2 }}>
-              <Link to={item.path} style={linkStyle}>
-                {item.text}
-              </Link>
-            </Button>
-          ))}
+          {/* Submenu for Tours, Monuments, and Hotels */}
+          <Menu
+            anchorEl={subMenuAnchorEl}
+            open={Boolean(subMenuAnchorEl)}
+            onClose={handleMenuClose(setSubMenuAnchorEl)}
+            anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+            transformOrigin={{ vertical: 'top', horizontal: 'left' }}
+          >
+            {activeCategory &&
+              subMenuItems[activeCategory].map((item) => (
+                <MenuItem key={item.text} onClick={handleMenuClose(setSubMenuAnchorEl)}>
+                  <Link to={item.path} style={linkStyle}>
+                    {item.text}
+                  </Link>
+                </MenuItem>
+              ))}
+          </Menu>
+
+          {/* Other menu items */}
+          <Button color="inherit" sx={{ mx: 2 }}>
+            <Link to="/admin/users/view" style={linkStyle}>
+              View Users
+            </Link>
+          </Button>
+          <Button color="inherit" sx={{ mx: 2 }}>
+            <Link to="/admin/profile" style={linkStyle}>
+              Admin Profile
+            </Link>
+          </Button>
+          <Button color="inherit" sx={{ mx: 2 }}>
+            <Link to="/admin/queries/view" style={linkStyle}>
+              View Queries
+            </Link>
+          </Button>
+          <Button color="inherit" sx={{ mx: 2 }}>
+            <Link to="/admin-bookings" style={linkStyle}>
+              View Bookings
+            </Link>
+          </Button>
         </Box>
 
         {/* Logout Button */}
@@ -128,12 +172,21 @@ const AdminNavbar = () => {
             <ListItem>
               <ListItemText primary="Admin Panel" sx={{ fontWeight: 'bold' }} />
             </ListItem>
-            {menuItems.map((item) => (
-              <ListItem key={item.text} disablePadding>
-                <ListItemButton component={Link} to={item.path}>
-                  <ListItemText primary={item.text} />
-                </ListItemButton>
-              </ListItem>
+            {Object.keys(subMenuItems).map((category) => (
+              <React.Fragment key={category}>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemText primary={category} />
+                  </ListItemButton>
+                </ListItem>
+                {subMenuItems[category].map((item) => (
+                  <ListItem key={item.text} disablePadding sx={{ pl: 4 }}>
+                    <ListItemButton component={Link} to={item.path}>
+                      <ListItemText primary={item.text} />
+                    </ListItemButton>
+                  </ListItem>
+                ))}
+              </React.Fragment>
             ))}
             <ListItem disablePadding>
               <ListItemButton onClick={handleLogout}>

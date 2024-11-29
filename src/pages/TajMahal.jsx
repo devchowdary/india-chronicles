@@ -26,7 +26,7 @@ const TajMahal = () => {
   ];
 
   return (
-    <Container sx={{ marginTop: 4, marginBottom: 4, marginTop: '50px' }}>
+    <Container sx={{ marginTop: 7, marginBottom: 4 }}>
       {/* Header Section */}
       <Box textAlign="center" marginBottom={6}>
         <Typography variant="h3" component="h1" gutterBottom sx={{ fontWeight: 700, color: "#00695c" }}>

@@ -94,6 +94,7 @@ const ViewBookings = () => {
             <TableRow>
               <TableCell><strong>ID</strong></TableCell>
               <TableCell><strong>Name</strong></TableCell>
+              <TableCell><strong>Hotel</strong></TableCell>
               <TableCell><strong>Duration</strong></TableCell>
               <TableCell><strong>Total Bill (₹)</strong></TableCell>
               <TableCell><strong>Action</strong></TableCell>
@@ -105,6 +106,7 @@ const ViewBookings = () => {
                 <TableRow key={booking.id}>
                   <TableCell>{booking.id}</TableCell>
                   <TableCell>{booking.name}</TableCell>
+                  <TableCell>{booking.hotelName}</TableCell>
                   <TableCell>{booking.duration} days</TableCell>
                   <TableCell>₹{booking.totalBill}</TableCell>
                   <TableCell>
@@ -177,6 +179,10 @@ const ViewBookings = () => {
                       <TableRow>
                         <TableCell><strong>Customer Name:</strong></TableCell>
                         <TableCell>{booking.name}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell><strong>Hotel Name:</strong></TableCell>
+                        <TableCell>{booking.hotelName}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell><strong>Email:</strong></TableCell>
