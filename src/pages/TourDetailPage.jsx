@@ -89,6 +89,8 @@ const TourDetailPage = () => {
   const [name, setName] = useState(""); // Name field
   const [email, setEmail] = useState(""); // Email field
 
+  const username = localStorage.getItem("username") || "";
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -132,7 +134,7 @@ const TourDetailPage = () => {
   };
 
   const handleBooking = () => {
-    if (!name || !email || !members || !checkIn || !checkOut) {
+    if (!email || !members || !checkIn || !checkOut) {
       alert("Please fill all fields");
       return;
     }
@@ -140,7 +142,7 @@ const TourDetailPage = () => {
     setBookingInProgress(true); // Show loader
 
     const bookingData = {
-      name,
+      name:username,
       email,
       packageType: selectedPackage.label,
       members,
@@ -244,10 +246,11 @@ const TourDetailPage = () => {
 
             <TextField
               label="Your Name"
-              value={name}
+              value={username}
               onChange={(e) => setName(e.target.value)}
               fullWidth
               sx={{ marginY: 2 }}
+              disabled
             />
             <TextField
               label="Your Email"
@@ -314,7 +317,7 @@ const TourDetailPage = () => {
               color="primary"
               fullWidth
               onClick={handleBooking}
-              disabled={!members || !checkIn || !checkOut || !name || !email}
+              disabled={!members || !checkIn || !checkOut  || !email}
               sx={{ marginTop: 2 }}
             >
               Book Tour
@@ -322,7 +325,7 @@ const TourDetailPage = () => {
           </Grid>
 
           {/* Right Section */}
-          <Grid item xs={12} md={6} marginTop={'200px'}>
+          <Grid item xs={12} md={6} marginTop={'200px'} minHeight='300px' maxHeight='300px'>
             <Carousel>
               {selectedPackage.images.map((image, index) => (
                 <div key={index}>

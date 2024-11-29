@@ -39,7 +39,7 @@ const Login = () => {
     if (isAuthenticated) {
       const role = localStorage.getItem('role');
       if (role === 'ADMIN') {
-        navigate('/admin-bookings'); // Admin dashboard
+        navigate('/admin-dashboard'); // Admin dashboard
       } else {
         navigate('/'); // User homepage
       }

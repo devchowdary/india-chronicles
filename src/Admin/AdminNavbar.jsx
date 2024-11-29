@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import MenuIcon from '@mui/icons-material/Menu';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'; // Import the Admin icon
 
 const AdminNavbar = () => {
   const [anchorEl, setAnchorEl] = useState(null); // For dropdown menu
@@ -55,9 +56,21 @@ const AdminNavbar = () => {
     { text: 'View Bookings', path: '/admin-bookings' },
   ];
 
+  const handleLogoClick = () => {
+    navigate('/admin-dashboard'); // Redirect to Admin Dashboard
+  };
+
   return (
     <AppBar position="static">
       <Toolbar>
+        {/* Admin Logo on the Left */}
+        <Box sx={{ flexGrow: 1 }}>
+          <IconButton onClick={handleLogoClick} edge="start" color="inherit">
+            {/* Admin Panel icon */}
+            <AdminPanelSettingsIcon />
+          </IconButton>
+        </Box>
+
         {/* Hamburger Menu for Mobile */}
         <Box sx={{ display: { xs: 'flex', md: 'none' }, flexGrow: 1 }}>
           <IconButton edge="start" color="inherit" onClick={toggleDrawer(true)}>
@@ -67,18 +80,10 @@ const AdminNavbar = () => {
 
         {/* Links for Desktop */}
         <Box sx={{ display: { xs: 'none', md: 'flex' }, flexGrow: 1, justifyContent: 'center' }}>
-          <Button
-            color="inherit"
-            sx={{ mx: 2 }}
-            onClick={handleMenuOpen}
-          >
+          <Button color="inherit" sx={{ mx: 2 }} onClick={handleMenuOpen}>
             Tours
           </Button>
-          <Menu
-            anchorEl={anchorEl}
-            open={Boolean(anchorEl)}
-            onClose={handleMenuClose}
-          >
+          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
             <MenuItem onClick={handleMenuClose}>
               <Link to="/admin/tours/view" style={linkStyle}>
                 View Tours
@@ -87,6 +92,11 @@ const AdminNavbar = () => {
             <MenuItem onClick={handleMenuClose}>
               <Link to="/admin/tours/add" style={linkStyle}>
                 Add Tour
+              </Link>
+            </MenuItem>
+            <MenuItem onClick={handleMenuClose}>
+              <Link to="/admin/add-monument" style={linkStyle}>
+                Add Monument
               </Link>
             </MenuItem>
           </Menu>

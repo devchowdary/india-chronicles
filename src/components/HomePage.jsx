@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Typography, Grid, Card, CardContent, CardMedia, Button } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import Carousel from 'react-material-ui-carousel';
 import tajmahal from "../images/taj-mahal.jpg";
 import qutabminar from "../images/qutab-minar.jpg";
 import redfort from "../images/red-fort.jpg";
+import background1 from '../images/background1.jpg';
+import background2 from '../images/background2.jpg';
+import background3 from '../images/background3.jpg';
 import Navbar from './Navbar';
-import background from '../images/background1.jpg';
 import { Helmet } from 'react-helmet';
 
 const HomePage = () => {
@@ -51,6 +54,8 @@ const HomePage = () => {
         }
     ];
 
+    const backgroundImages = [background1, background2, background3];
+
     const filteredContent = featuredContent.filter(item =>
         item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         item.location.toLowerCase().includes(searchQuery.toLowerCase())
@@ -68,63 +73,86 @@ const HomePage = () => {
 
             <Navbar onSearch={(query) => setSearchQuery(query)} />
 
-            <header style={{
-                position: 'relative',
-                background: `url(${background}) no-repeat center center`,
-                backgroundSize: 'cover',
-                color: '#fff',
-                padding: '80px 20px',
-                minHeight: '100vh',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                textAlign: 'center',
-                width: '100vw',
-                boxSizing: 'border-box',
-                overflow: 'hidden',
-                backgroundAttachment: 'fixed'
-            }}>
-                <Container maxWidth="md" style={{ position: 'relative', zIndex: 1 }}>
-                    {username && (
-                        <Typography variant="h5" component="p" gutterBottom style={{
-                            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.4)',
-                            fontSize: '2.3rem',
-                            lineHeight: '1.4',
-                            marginBottom: '20px',
-                            color: 'black'
-                        }}>
-                            WELCOME, {username.toUpperCase()}!
-                        </Typography>
-                    )}
-                    <Typography variant="h2" component="h1" gutterBottom style={{
-                        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)',
-                        fontWeight: 700,
-                        fontSize: '3rem',
-                        lineHeight: '1.1',
-                        color: 'black'
-                    }}>
-                        Explore the Rich Heritage of India
-                    </Typography>
-                    <Button
-                        variant="contained"
-                        color="error"
-                        onClick={() => navigate('/explore')}
-                        size="large"
-                        sx={{
-                            mt: 3,
-                            background: 'linear-gradient(45deg, #FF5722 30%, #F44336 90%)',
-                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
-                            transition: 'all 0.3s ease',
-                            '&:hover': {
-                                transform: 'scale(1.05)',
-                                boxShadow: '0 8px 12px rgba(0, 0, 0, 0.5)',
-                                background: 'linear-gradient(45deg, #F44336 30%, #FF5722 90%)',
-                            },
-                        }}
-                    >
-                        Explore by State
-                    </Button>
-                </Container>
+            <header>
+                <Carousel
+                    indicators={false}
+                    interval={3000}
+                    animation="fade"
+                    navButtonsAlwaysVisible
+                >
+                    {backgroundImages.map((image, index) => (
+                        <div
+                            key={index}
+                            style={{
+                                background: `url(${image}) no-repeat center center`,
+                                backgroundSize: 'cover',
+                                color: '#fff',
+                                padding: '80px 20px',
+                                minHeight: '100vh',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'center',
+                                textAlign: 'center',
+                                width: '100vw',
+                                boxSizing: 'border-box',
+                                overflow: 'hidden',
+                                backgroundAttachment: 'scroll'
+                            }}
+                        >
+                            <Container maxWidth="md" style={{ position: 'relative', zIndex: 1 }}>
+                                {username && (
+                                    <Typography
+                                        variant="h5"
+                                        component="p"
+                                        gutterBottom
+                                        style={{
+                                            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.4)',
+                                            fontSize: '2.3rem',
+                                            lineHeight: '1.4',
+                                            marginBottom: '20px',
+                                            color: 'black'
+                                        }}
+                                    >
+                                        WELCOME, {username.toUpperCase()}!
+                                    </Typography>
+                                )}
+                                <Typography
+                                    variant="h2"
+                                    component="h1"
+                                    gutterBottom
+                                    style={{
+                                        textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)',
+                                        fontWeight: 700,
+                                        fontSize: '3rem',
+                                        lineHeight: '1.1',
+                                        color: 'black'
+                                    }}
+                                >
+                                    Explore the Rich Heritage of India
+                                </Typography>
+                                <Button
+                                    variant="contained"
+                                    color="error"
+                                    onClick={() => navigate('/explore')}
+                                    size="large"
+                                    sx={{
+                                        mt: 3,
+                                        background: 'linear-gradient(45deg, #FF5722 30%, #F44336 90%)',
+                                        boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
+                                        transition: 'all 0.3s ease',
+                                        '&:hover': {
+                                            transform: 'scale(1.05)',
+                                            boxShadow: '0 8px 12px rgba(0, 0, 0, 0.5)',
+                                            background: 'linear-gradient(45deg, #F44336 30%, #FF5722 90%)',
+                                        },
+                                    }}
+                                >
+                                    Explore by State
+                                </Button>
+                            </Container>
+                        </div>
+                    ))}
+                </Carousel>
             </header>
 
             <section style={{ padding: '40px 20px' }}>
