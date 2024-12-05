@@ -34,7 +34,7 @@ const Profile = () => {
     // Function to fetch the profile
     const fetchProfile = async (token) => {
         try {
-            const response = await axios.get("http://localhost:8080/user/profile", {
+            const response = await axios.get("https://indiachronicles-backend.onrender.com/user/profile", {
                 headers: {
                     Authorization: `Bearer ${token}`, // Send the token with request
                 },

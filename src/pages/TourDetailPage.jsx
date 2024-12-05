@@ -52,7 +52,7 @@ const TourDetailPage = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get("http://localhost:8080/hotels/display-hotels")
+      .get("https://indiachronicles-backend.onrender.com/hotels/display-hotels")
       .then((response) => {
         setHotels(response.data);
         if (response.data.length > 0) {
@@ -120,7 +120,7 @@ const TourDetailPage = () => {
     };
 
     axios
-      .post(`http://localhost:8080/tour-details/book-tour`, bookingData)
+      .post(`https://indiachronicles-backend.onrender.com/tour-details/book-tour`, bookingData)
       .then(() => {
         setBookingInProgress(false); // Hide loader
         setDialogOpen(true);

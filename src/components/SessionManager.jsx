@@ -15,7 +15,7 @@ const SessionManager = () => {
     const handleExtendSession = async () => {
         try {
             // Send the current token to the backend to refresh it
-            const response = await axios.post('http://localhost:8080/user/refresh-token', {}, {
+            const response = await axios.post('https://indiachronicles-backend.onrender.com/user/refresh-token', {}, {
                 headers: { Authorization: `Bearer ${token}` }, // Send the current token in the Authorization header
             });
 

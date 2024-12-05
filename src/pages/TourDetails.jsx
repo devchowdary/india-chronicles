@@ -12,7 +12,7 @@ const TourDetails = () => {
 
   useEffect(() => {
     setTimeout(() => {
-      axios.get(`http://localhost:8080/tour-details/respective-tour/${id}`)
+      axios.get(`https://indiachronicles-backend.onrender.com/tour-details/respective-tour/${id}`)
         .then(response => {
           setTour(response.data);
           setLoading(false);

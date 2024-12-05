@@ -25,7 +25,7 @@ const ViewTours = () => {
       // Simulate a delay in fetching data
       setTimeout(() => {
         axios
-          .get("http://localhost:8080/tour-details/gettours")
+          .get("https://indiachronicles-backend.onrender.com/tour-details/gettours")
           .then((response) => {
             setTours(response.data);
             setLoading(false);

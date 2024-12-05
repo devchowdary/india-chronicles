@@ -23,7 +23,7 @@ const UpdateTours = () => {
   useEffect(() => {
     // Fetch the existing data for the tour
     axios
-      .get(`http://localhost:8080/tour-details/respective-tour/${id}`)
+      .get(`https://indiachronicles-backend.onrender.com/tour-details/respective-tour/${id}`)
       .then((response) => {
         setTourData(response.data);
       })

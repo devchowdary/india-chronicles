@@ -30,7 +30,7 @@ const UpdateProfile = () => {
 
         // Fetch the user's current profile details
         axios
-            .get("http://localhost:8080/user/profile", {
+            .get("https://indiachronicles-backend.onrender.com/user/profile", {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
@@ -52,7 +52,7 @@ const UpdateProfile = () => {
 
         try {
             await axios.put(
-                "http://localhost:8080/user/update",
+                "https://indiachronicles-backend.onrender.com/user/update",
                 profile,
                 {
                     headers: {

@@ -28,7 +28,7 @@ const ViewBookings = () => {
   useEffect(() => {
     // Fetch bookings data from the backend
     axios
-      .get("http://localhost:8080/tour-details/bookings")
+      .get("https://indiachronicles-backend.onrender.com/tour-details/bookings")
       .then((response) => {
         console.log("Bookings Data:", response.data); // Log the response
         setBookings(response.data);

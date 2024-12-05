@@ -17,6 +17,7 @@ import AddCircleIcon from "@mui/icons-material/AddCircle";
 import axios from "axios";
 
 const AddHotel = () => {
+  
   const [hotel, setHotel] = useState({
     name: "", // Hotel Name field
     packageType: "", // Standard, Premium, Deluxe
@@ -87,7 +88,7 @@ const AddHotel = () => {
   const handleSubmit = async () => {
     try {
       // Send the hotel data to the backend
-      await axios.post("http://localhost:8080/hotels/add-hotel", hotel);
+      await axios.post("https://indiachronicles-backend.onrender.com/hotels/add-hotel", hotel);
       setSnackbarMessage("Hotel added successfully!");
       setSnackbarSeverity("success");
       setHotel({

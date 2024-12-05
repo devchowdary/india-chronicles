@@ -26,7 +26,7 @@ const AdminDashboard = () => {
   // Fetch Users
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user/all-users")
+      .get("https://indiachronicles-backend.onrender.com/user/all-users")
       .then((response) => {
         setUsers(response.data);
         setLoading(false);
@@ -40,7 +40,7 @@ const AdminDashboard = () => {
   // Fetch Queries
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user/contact-inquiries")
+      .get("https://indiachronicles-backend.onrender.com/user/contact-inquiries")
       .then((response) => {
         setQueries(response.data);
         setLoading(false);
@@ -54,7 +54,7 @@ const AdminDashboard = () => {
   // Fetch Tours
   useEffect(() => {
     axios
-      .get("http://localhost:8080/tour-details/gettours")
+      .get("https://indiachronicles-backend.onrender.com/tour-details/gettours")
       .then((response) => {
         setTours(response.data);
         setLoading(false);
@@ -68,7 +68,7 @@ const AdminDashboard = () => {
   // Fetch Bookings
   useEffect(() => {
     axios
-      .get("http://localhost:8080/tour-details/bookings")
+      .get("https://indiachronicles-backend.onrender.com/tour-details/bookings")
       .then((response) => {
         setBookings(response.data);
         setLoading(false);
@@ -82,7 +82,7 @@ const AdminDashboard = () => {
   // Fetch Hotels
   useEffect(() => {
     axios
-      .get("http://localhost:8080/hotels/display-hotels") // API endpoint for hotels
+      .get("https://indiachronicles-backend.onrender.com/hotels/display-hotels") // API endpoint for hotels
       .then((response) => {
         setHotels(response.data);
         setLoading(false);

@@ -125,12 +125,11 @@ const App = () => {
         <Route path="/profile" element={<Profile />} />
         <Route path="/update-profile" element={<UpdateProfile />} />
 
-        {/* Admin Routes */}
         {userRole === 'ADMIN'
           ? AdminRoutes.map(({ path, element }, index) => (
               <Route key={index} path={path} element={element} />
             ))
-          : <Route path="/admin/*" element={<Navigate to="/" />} />} {/* Redirect unauthorized users */}
+          : <Route path="/admin/*" element={<Navigate to="/" />} />} 
       </Routes>
       <Footer />
     </Router>

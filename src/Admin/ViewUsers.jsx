@@ -14,14 +14,14 @@ const ViewUsers = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user/all-users")
+      .get("https://indiachronicles-backend.onrender.com/user/all-users")
       .then((response) => setUsers(response.data))
       .catch((error) => console.error("Error fetching users:", error));
   }, []);
 
   const handleViewDetails = (id) => {
     axios
-      .get(`http://localhost:8080/user/respective-user/${id}`)
+      .get(`https://indiachronicles-backend.onrender.com/user/respective-user/${id}`)
       .then((response) => {
         setSelectedUser(response.data);
         setOpen(true);
@@ -37,7 +37,7 @@ const ViewUsers = () => {
 
   const handleDeleteConfirm = () => {
     axios
-      .delete(`http://localhost:8080/user/delete/${userIdToDelete}`)
+      .delete(`https://indiachronicles-backend.onrender.com/user/delete/${userIdToDelete}`)
       .then(() => {
         setSuccessMessage(`${userNameToDelete} deleted successfully!`); // Show success message with username
         setDeleteDialogOpen(false); // Close delete confirmation dialog
@@ -45,7 +45,7 @@ const ViewUsers = () => {
         setUserNameToDelete(""); // Clear username after deletion
         // Refresh the user list
         axios
-          .get("http://localhost:8080/user/all-users")
+          .get("https://indiachronicles-backend.onrender.com/user/all-users")
           .then((response) => setUsers(response.data))
           .catch((error) => console.error("Error fetching users:", error));
       })

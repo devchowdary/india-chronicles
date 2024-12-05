@@ -12,7 +12,7 @@ const ViewTours = () => {
   useEffect(() => {
     // Fetch the list of tours
     axios
-      .get("http://localhost:8080/tour-details/gettours")
+      .get("https://indiachronicles-backend.onrender.com/tour-details/gettours")
       .then((response) => {
         setTours(response.data);
         setLoading(false);

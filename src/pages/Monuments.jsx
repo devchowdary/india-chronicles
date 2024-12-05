@@ -22,7 +22,7 @@ const Monuments = () => {
 
   const fetchMonuments = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/monuments/display-monuments");
+      const response = await axios.get("https://indiachronicles-backend.onrender.com/monuments/display-monuments");
       setMonuments(response.data);
     } catch (error) {
       console.error("Error fetching monuments:", error);

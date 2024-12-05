@@ -53,7 +53,7 @@ const ViewMonuments = () => {
 
   const fetchMonuments = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/monuments/display-monuments");
+      const response = await axios.get("https://indiachronicles-backend.onrender.com/monuments/display-monuments");
       setMonuments(response.data);
     } catch (error) {
       console.error("Error fetching monuments:", error);
@@ -63,7 +63,7 @@ const ViewMonuments = () => {
   const handleDelete = async () => {
     try {
       if (selectedMonument) {
-        await axios.delete(`http://localhost:8080/monuments/delete/${selectedMonument.id}`);
+        await axios.delete(`https://indiachronicles-backend.onrender.com/monuments/delete/${selectedMonument.id}`);
         setMonuments((prev) => prev.filter((monument) => monument.id !== selectedMonument.id));
         setSnackbarMessage("Monument deleted successfully!"); // Set the success message
         setSnackbarSeverity("success");
@@ -92,7 +92,7 @@ const ViewMonuments = () => {
     try {
       if (selectedMonument) {
         await axios.put(
-          `http://localhost:8080/monuments/update/${selectedMonument.id}`,
+          `https://indiachronicles-backend.onrender.com/monuments/update/${selectedMonument.id}`,
           updatedMonument
         );
         fetchMonuments(); // Refresh the list after update

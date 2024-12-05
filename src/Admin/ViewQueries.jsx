@@ -35,7 +35,7 @@ const ViewQueries = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/user/contact-inquiries")
+      .get("https://indiachronicles-backend.onrender.com/user/contact-inquiries")
       .then((response) => {
         setQueries(response.data);
         setLoading(false);
@@ -73,7 +73,7 @@ const ViewQueries = () => {
 
     setSending(true); // Show loading spinner
     axios
-      .post("http://localhost:8080/user/send-reply", {
+      .post("https://indiachronicles-backend.onrender.com/user/send-reply", {
         email: selectedQuery.email,
         reply: replyText,
       })

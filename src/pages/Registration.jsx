@@ -40,7 +40,7 @@ const Registration = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            await axios.post('http://localhost:8080/user/register', user);
+            await axios.post('https://indiachronicles-backend.onrender.com/user/register', user);
             setIsOtpSent(true);
             setMessage(`OTP sent to ${user.email}`);
             startCountdown(); 
@@ -56,7 +56,7 @@ const Registration = () => {
         e.preventDefault();
         setLoading(true); 
         try {
-            const response = await axios.post('http://localhost:8080/user/verify-otp', null, {
+            const response = await axios.post('https://indiachronicles-backend.onrender.com/user/verify-otp', null, {
                 params: { email: user.email, otp },
             });
             if (response.status === 200) {

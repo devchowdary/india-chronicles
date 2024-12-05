@@ -33,7 +33,7 @@ const ViewHotels = () => {
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/hotels/display-hotels");
+        const response = await axios.get("https://indiachronicles-backend.onrender.com/hotels/display-hotels");
         setHotels(response.data);
         if (response.data.length > 0) {
           setSelectedHotel(response.data[0]); // Default to the first hotel
@@ -63,7 +63,7 @@ const ViewHotels = () => {
   const handleUpdateHotel = async () => {
     try {
       const response = await axios.put(
-        `http://localhost:8080/hotels/update-hotel/${selectedHotel.id}`,
+        `https://indiachronicles-backend.onrender.com/hotels/update-hotel/${selectedHotel.id}`,
         { ...updatedHotel, images: [...updatedHotel.images, ...additionalImages] }
       );
       setSelectedHotel(response.data);
@@ -82,7 +82,7 @@ const ViewHotels = () => {
   // Handle hotel deletion
   const handleDeleteHotel = async () => {
     try {
-      await axios.delete(`http://localhost:8080/hotels/delete-hotel/${hotelToDelete.id}`);
+      await axios.delete(`https://indiachronicles-backend.onrender.com/hotels/delete-hotel/${hotelToDelete.id}`);
       setHotels(hotels.filter((hotel) => hotel.id !== hotelToDelete.id));
       setDeleteSuccess(true);
       setOpenDeleteDialog(false);

@@ -54,7 +54,7 @@ const AddTourForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/tour-details/create', tourDetails);
+      const response = await axios.post('https://indiachronicles-backend.onrender.com/tour-details/create', tourDetails);
       toast.success('Tour added successfully!', { position: 'top-center', autoClose: 2000 });
       console.log('Response:', response.data);
       setTourDetails({

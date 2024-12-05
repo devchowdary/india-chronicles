@@ -20,7 +20,7 @@ const AddMonuments = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/monuments/add-monument', monumentData);
+      const response = await axios.post('https://indiachronicles-backend.onrender.com/monuments/add-monument', monumentData);
       console.log(response.data);
       setOpenSnackbar(true); // Open Snackbar on success
       setMonumentData({ title: '', year: '', description: '', imageUrl: '' }); // Reset form

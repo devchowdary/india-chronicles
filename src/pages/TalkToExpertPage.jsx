@@ -34,7 +34,7 @@ const TalkToExpertPage = () => {
     const contactData = { name, email, phone, location, subject, message };
 
     try {
-      const response = await axios.post("http://localhost:8080/user/contact-expert", contactData);
+      const response = await axios.post("https://indiachronicles-backend.onrender.com/user/contact-expert", contactData);
       setLoading(false);
       toast.success("Your query has been submitted successfully!");
       setErrorMessage("");
