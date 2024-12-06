@@ -43,7 +43,7 @@ const TourDetails = () => {
           <CardMedia
             component="img"
             height="600"
-            image={tour.images && tour.images.length > 0 ? tour.images[2] : fallbackImage}
+            image={tour.images && tour.images.length > 0 ? tour.images[1] : fallbackImage}
             alt={tour.title}
             onError={(e) => e.target.src = fallbackImage}
             sx={{ borderRadius: 2, objectFit: 'cover', marginBottom: 3 }}

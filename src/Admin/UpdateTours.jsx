@@ -60,7 +60,7 @@ const UpdateTours = () => {
 
   const handleUpdate = () => {
     axios
-      .put(`http://localhost:8080/tour-details/update/${id}`, tourData)
+      .put(`https://indiachronicles-backend.onrender.com/tour-details/update/${id}`, tourData)
       .then(() => {
         setSuccess(true); // Show success message
       })
